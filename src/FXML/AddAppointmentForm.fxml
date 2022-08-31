@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="401.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AddAppointmentFormController">
+    <children>
+        <Separator layoutX="-2.0" layoutY="57.0" prefHeight="0.0" prefWidth="401.0" />
+        <TextField fx:id="idTextField" disable="true" editable="false" layoutX="155.0" layoutY="92.0" promptText="Auto-Generated" />
+        <TextField fx:id="titleTextField" layoutX="155.0" layoutY="142.0" prefHeight="3.0" prefWidth="149.0" />
+        <TextField fx:id="descriptionTextField" layoutX="155.0" layoutY="190.0" prefHeight="3.0" prefWidth="149.0" />
+        <TextField fx:id="locationTextField" layoutX="155.0" layoutY="237.0" prefHeight="3.0" prefWidth="149.0" />
+      <ComboBox fx:id="contactComboBox" layoutX="155.0" layoutY="286.0" prefWidth="150.0" />
+      <TextField fx:id="typeTextField" layoutX="157.0" layoutY="335.0" prefHeight="3.0" prefWidth="149.0" />
+      <TextField fx:id="startTimeTextField" layoutX="178.0" layoutY="424.0" prefHeight="3.0" prefWidth="149.0" promptText="HH:MM" />
+      <TextField fx:id="endTimeTextField" layoutX="176.0" layoutY="511.0" prefHeight="3.0" prefWidth="149.0" promptText="HH:MM" />
+      <ComboBox fx:id="customerIDComboBox" layoutX="158.0" layoutY="557.0" prefWidth="150.0" />
+      <ComboBox fx:id="userIDComboBox" layoutX="158.0" layoutY="607.0" prefWidth="150.0" />
+        <Button layoutX="259.0" layoutY="663.0" mnemonicParsing="false" onAction="#onActionSaveAppointment" prefHeight="25.0" prefWidth="89.0" text="Save" />
+        <Button layoutX="31.0" layoutY="663.0" mnemonicParsing="false" onAction="#onActionBackAppointmentsForm" prefHeight="25.0" prefWidth="89.0" text="Back" />
+        <Text fx:id="addAppointmentText" layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Appointment">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Text>
+        <Text fx:id="idText" layoutX="47.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointment ID" />
+        <Text fx:id="startDateText" layoutX="46.0" layoutY="401.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date" wrappingWidth="88.814453125" />
+        <Text fx:id="endDateText" layoutX="47.0" layoutY="486.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Date" wrappingWidth="88.814453125" />
+        <Text fx:id="titleText" layoutX="47.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" />
+        <Text fx:id="descriptionText" layoutX="47.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
+        <Text fx:id="locationText" layoutX="46.0" layoutY="253.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location" wrappingWidth="88.814453125" />
+        <Text fx:id="contactText" layoutX="46.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact Name" wrappingWidth="88.814453125" />
+        <Text fx:id="customerIDText" layoutX="48.0" layoutY="574.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer ID" wrappingWidth="88.814453125" />
+        <Text fx:id="userIDText" layoutX="48.0" layoutY="624.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User ID" wrappingWidth="88.814453125" />
+      <Text fx:id="typeText" layoutX="47.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" wrappingWidth="88.814453125" />
+      <Text fx:id="startTimeText" layoutX="107.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" wrappingWidth="60.251953125" />
+      <Text fx:id="endTimeText" layoutX="105.0" layoutY="528.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" wrappingWidth="51.814453125" />
+      <Line endX="-100.0" endY="-46.98828125" layoutX="169.0" layoutY="454.0" startX="-100.5" startY="-19.0" />
+      <Line endX="-122.0" endY="-15.5" layoutX="191.0" layoutY="451.0" startX="-98.0" startY="-15.5" />
+      <Line endX="-100.0" endY="-46.98828125" layoutX="167.0" layoutY="543.0" startX="-100.5" startY="-19.0" />
+      <Line endX="-122.0" endY="-15.5" layoutX="189.0" layoutY="540.0" startX="-99.0" startY="-15.5" />
+      <DatePicker fx:id="startDateTimePicker" layoutX="157.0" layoutY="384.0" promptText="Start Date" />
+      <DatePicker fx:id="endDateTimePicker" layoutX="157.0" layoutY="469.0" promptText="End Date" />
+    </children>
+</AnchorPane>
