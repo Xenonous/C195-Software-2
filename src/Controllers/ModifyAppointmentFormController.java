@@ -22,12 +22,19 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ModifyAppointmentFormController implements Initializable {
     Stage stage;
     Parent scene;
+
+    private static DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static ZoneId localZoneID = ZoneId.systemDefault();
+    private static ZoneId utcZoneID = ZoneId.of("UTC");
 
     private void timeFormat() {
         //DATE
@@ -164,9 +171,21 @@ public class ModifyAppointmentFormController implements Initializable {
                     int selectedCustomerID = Integer.parseInt(String.valueOf(customerIDComboBox.getSelectionModel().getSelectedItem()));
                     int selectedUserID = Integer.parseInt(String.valueOf(userIDComboBox.getSelectionModel().getSelectedItem()));
 
-                    String startDateTime = startDateTimePicker.getValue() + " " + startTimeTextField.getText();
-                    String endDateTime = endDateTimePicker.getValue() + " " + endTimeTextField.getText();
+                    String appointmentStartDateTime = startDateTimePicker.getValue() + " " + startTimeTextField.getText();
+                    String appointmentEndDateTime = endDateTimePicker.getValue() + " " + endTimeTextField.getText();
 
+                    // System.out.println(appointmentStartDateTime + " " + appointmentEndDateTime);
+
+                    LocalDateTime utcStartDT = LocalDateTime.parse(appointmentStartDateTime, datetimeDTF);
+                    LocalDateTime utcEndDT = LocalDateTime.parse(appointmentEndDateTime, datetimeDTF);
+
+                    ZonedDateTime localZoneStart = utcStartDT.atZone(localZoneID).withZoneSameInstant(utcZoneID);
+                    ZonedDateTime localZoneEnd = utcEndDT.atZone(localZoneID).withZoneSameInstant(utcZoneID);
+
+                    String UTCAppointmentStartDateTime = localZoneStart.format(datetimeDTF);
+                    String UTCAppointmentEndDateTime = localZoneEnd.format(datetimeDTF);
+
+                    // System.out.println(UTCAppointmentStartDateTime + " " + UTCAppointmentEndDateTime);
 
                     String SQL = "UPDATE APPOINTMENTS SET TITLE = ?, DESCRIPTION = ?, LOCATION = ?, TYPE = ?, START = ?, END = ?, CREATE_DATE = ?, CREATED_BY = ?, LAST_UPDATE = ?, LAST_UPDATED_BY = ?, CUSTOMER_ID = ?, USER_ID = ?, CONTACT_ID = ? WHERE Appointment_ID = " + idTextField.getText();
                     PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
@@ -174,8 +193,8 @@ public class ModifyAppointmentFormController implements Initializable {
                     ps.setString(2, descriptionTextField.getText());
                     ps.setString(3, locationTextField.getText());
                     ps.setString(4, typeTextField.getText());
-                    ps.setString(5, startDateTime);
-                    ps.setString(6, endDateTime);
+                    ps.setString(5, UTCAppointmentStartDateTime);
+                    ps.setString(6, UTCAppointmentEndDateTime);
                     ps.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now()));
                     ps.setString(8, "admin");
                     ps.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now()));
@@ -194,7 +213,7 @@ public class ModifyAppointmentFormController implements Initializable {
                     alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("ERROR");
                     alert.setHeaderText("DATE/TIME FORMAT ERROR.");
-                    alert.setContentText("Please make sure your start date/time AND end date/time are in the correct formats. \n" + "DATE = 'YYYY-MM-DD' \n" + "TIME = 'HH:MM'");
+                    alert.setContentText("Please make sure your start date/time AND end date/time are in the correct formats. \n" + "DATE = 'YYYY-MM-DD' \n" + "TIME = 'HH:MM:SS'");
                     alert.showAndWait();
                 }
             }

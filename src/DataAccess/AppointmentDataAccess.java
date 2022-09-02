@@ -4,13 +4,23 @@ import C195.JDBC;
 import UML.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class AppointmentDataAccess {
+
+    private static DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static ZoneId localZoneID = ZoneId.systemDefault();
+    private static ZoneId utcZoneID = ZoneId.of("UTC");
 
     private static int appointmentID = 0;
 
@@ -33,7 +43,6 @@ public class AppointmentDataAccess {
 
     public static ObservableList<Appointment> getAllAppointments() throws SQLException {
 
-
         String SQL = "SELECT * FROM APPOINTMENTS";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
         ResultSet rs = ps.executeQuery();
@@ -47,15 +56,25 @@ public class AppointmentDataAccess {
             String appointmentLocation = rs.getString(4);
             String appointmentType = rs.getString(5);
             String appointmentStartDateTime = rs.getString(6);
-            String appointmentEndDateTIme = rs.getString(7);
+            String appointmentEndDateTime = rs.getString(7);
             int customerID = rs.getInt(12);
             int userID = rs.getInt(13);
             int contactID = rs.getInt(14);
 
+            // System.out.println(appointmentStartDateTime + " " + appointmentEndDateTime);
 
+            LocalDateTime utcStartDT = LocalDateTime.parse(appointmentStartDateTime, datetimeDTF);
+            LocalDateTime utcEndDT = LocalDateTime.parse(appointmentEndDateTime, datetimeDTF);
 
+            ZonedDateTime localZoneStart = utcStartDT.atZone(utcZoneID).withZoneSameInstant(localZoneID);
+            ZonedDateTime localZoneEnd = utcEndDT.atZone(utcZoneID).withZoneSameInstant(localZoneID);
 
-            Appointment newAppointment = new Appointment(appointmentID,appointmentTitle,appointmentDescription,appointmentLocation,appointmentType,appointmentStartDateTime,appointmentEndDateTIme,customerID,userID,contactID);
+            String localAppointmentStartDateTime = localZoneStart.format(datetimeDTF);
+            String localAppointmentEndDateTime = localZoneEnd.format(datetimeDTF);
+
+            // System.out.println(localAppointmentStartDateTime + " " + localAppointmentEndDateTime);
+
+            Appointment newAppointment = new Appointment(appointmentID,appointmentTitle,appointmentDescription,appointmentLocation,appointmentType,localAppointmentStartDateTime,localAppointmentEndDateTime,customerID,userID,contactID);
             allAppointments.add(newAppointment);
 
             // System.out.println(rs.getInt(1) + " " + (rs.getString(2)) + " " + (rs.getString(3)) + " " + (rs.getString(4)) + " " + (rs.getString(5)));

@@ -26,6 +26,20 @@ public class CustomerRecordsFormController implements Initializable {
     Stage stage;
     Parent scene;
 
+    private boolean foreignKeyCheck(int customerID) throws SQLException {
+        String SQL = "SELECT CUSTOMER_ID FROM APPOINTMENTS WHERE CUSTOMER_ID = " + customerID;
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
+        ResultSet rs = ps.executeQuery();
+
+                if(rs.next()) {
+                    System.out.println("There is a foreign key connected to this Customer.");
+                    return false;
+                }
+                else {
+                    return true;
+                }
+    }
+
     @FXML
     private Button addCustomerButton;
 
@@ -130,14 +144,31 @@ public class CustomerRecordsFormController implements Initializable {
 
                 Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
 
-                String SQL = "DELETE CUSTOMERS FROM CUSTOMERS WHERE Customer_ID = " + selectedCustomer.getCustomerID();
-                PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
-                ps.execute();
+                if(foreignKeyCheck(selectedCustomer.getCustomerID()) == true) {
+                    String SQL = "DELETE CUSTOMERS FROM CUSTOMERS WHERE Customer_ID = " + selectedCustomer.getCustomerID();
+                    PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
+                    ps.execute();
 
-                System.out.println("Deletion Successful!");
+                    System.out.println("Deletion Successful!");
 
-                customerTableView.refresh();
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information");
+                    alert.setHeaderText("Customer Deletion");
+                    alert.setContentText("The selected Customer has been successfully deleted from the database.");
 
+                    customerTableView.refresh();
+
+
+
+
+                }
+                else{
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText("FOREIGN KEY ERROR");
+                    alert.setContentText("Please delete corresponding appointments attached to this customer first before deleting the customer.");
+                    alert.showAndWait();
+                }
             }
         }
     }

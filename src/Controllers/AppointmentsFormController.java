@@ -10,19 +10,24 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.ZoneId;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-import static DataAccess.CustomerDataAccess.getAllCustomers;
 
 public class AppointmentsFormController implements Initializable {
     Stage stage;
     Parent scene;
+
+    public void getZoneID() {
+        ZoneId zoneId = ZoneId.systemDefault();
+        displayRegionText.setText(String.valueOf(zoneId));
+    }
 
     @FXML
     private Button addAppointmentButton;
@@ -59,6 +64,12 @@ public class AppointmentsFormController implements Initializable {
 
     @FXML
     private TableColumn<Appointment,Integer> appointmentCustomerIDColumn; //Maybe change to Customer type?
+
+    @FXML
+    private Text regionText;
+
+    @FXML
+    private Text displayRegionText;
 
     @FXML
     private Button backButton;
@@ -144,7 +155,14 @@ public class AppointmentsFormController implements Initializable {
 
                 System.out.println("Deletion Successful!");
 
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setHeaderText("Appointment Deletion");
+                alert.setContentText("The selected Appointment has been successfully deleted from the database.");
+
                 appointmentTableView.refresh();
+
+
 
             }
         }
@@ -192,6 +210,8 @@ public class AppointmentsFormController implements Initializable {
         appointmentCustomerIDColumn.setCellValueFactory((new PropertyValueFactory<>("customerID")));
         appointmentUserID.setCellValueFactory((new PropertyValueFactory<>("userID")));
         appointmentContactColumn.setCellValueFactory((new PropertyValueFactory<>("contactID")));
+
+        getZoneID();
 
     }
 

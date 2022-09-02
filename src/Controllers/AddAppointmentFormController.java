@@ -20,12 +20,19 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AddAppointmentFormController implements Initializable {
     Stage stage;
     Parent scene;
+
+    private static DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static ZoneId localZoneID = ZoneId.systemDefault();
+    private static ZoneId utcZoneID = ZoneId.of("UTC");
 
     @FXML
     private Text addAppointmentText;
@@ -140,9 +147,22 @@ public class AddAppointmentFormController implements Initializable {
                     int selectedCustomerID = Integer.parseInt(String.valueOf(customerIDComboBox.getSelectionModel().getSelectedItem()));
                     int selectedUserID = Integer.parseInt(String.valueOf(userIDComboBox.getSelectionModel().getSelectedItem()));
 
-                    String startDateTime = startDateTimePicker.getValue() + " " + startTimeTextField.getText();
-                    String endDateTime = endDateTimePicker.getValue() + " " + endTimeTextField.getText();
 
+                    String appointmentStartDateTime = startDateTimePicker.getValue() + " " + startTimeTextField.getText();
+                    String appointmentEndDateTime = endDateTimePicker.getValue() + " " + endTimeTextField.getText();
+
+                    // System.out.println(appointmentStartDateTime + " " + appointmentEndDateTime);
+
+                    LocalDateTime utcStartDT = LocalDateTime.parse(appointmentStartDateTime, datetimeDTF);
+                    LocalDateTime utcEndDT = LocalDateTime.parse(appointmentEndDateTime, datetimeDTF);
+
+                    ZonedDateTime localZoneStart = utcStartDT.atZone(localZoneID).withZoneSameInstant(utcZoneID);
+                    ZonedDateTime localZoneEnd = utcEndDT.atZone(localZoneID).withZoneSameInstant(utcZoneID);
+
+                    String UTCAppointmentStartDateTime = localZoneStart.format(datetimeDTF);
+                    String UTCAppointmentEndDateTime = localZoneEnd.format(datetimeDTF);
+
+                    // System.out.println(UTCAppointmentStartDateTime + " " + UTCAppointmentEndDateTime);
 
                     String SQL = "INSERT INTO appointments (Appointment_ID, Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
@@ -151,8 +171,8 @@ public class AddAppointmentFormController implements Initializable {
                     ps.setString(3, descriptionTextField.getText());
                     ps.setString(4, locationTextField.getText());
                     ps.setString(5, typeTextField.getText());
-                    ps.setString(6, startDateTime);
-                    ps.setString(7, endDateTime);
+                    ps.setString(6, UTCAppointmentStartDateTime);
+                    ps.setString(7, UTCAppointmentEndDateTime);
                     ps.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
                     ps.setString(9, "admin");
                     ps.setTimestamp(10, Timestamp.valueOf(LocalDateTime.now()));
@@ -173,7 +193,7 @@ public class AddAppointmentFormController implements Initializable {
                     alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("ERROR");
                     alert.setHeaderText("DATE/TIME FORMAT ERROR.");
-                    alert.setContentText("Please make sure your start date/time AND end date/time are in the correct formats. \n" + "DATE = 'YYYY-MM-DD' \n" + "TIME = 'HH:MM'");
+                    alert.setContentText("Please make sure your start date/time AND end date/time are in the correct formats. \n" + "DATE = 'YYYY-MM-DD' \n" + "TIME = 'HH:MM:SS'");
                     alert.showAndWait();
                 }
 
