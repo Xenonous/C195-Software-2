@@ -20,10 +20,7 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -32,9 +29,10 @@ public class ModifyAppointmentFormController implements Initializable {
     Stage stage;
     Parent scene;
 
-    private static DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static ZoneId localZoneID = ZoneId.systemDefault();
     private static ZoneId utcZoneID = ZoneId.of("UTC");
+    private static ZoneId estZoneID = ZoneId.of("US/Eastern");
 
     private void timeFormat() {
         //DATE
@@ -47,8 +45,48 @@ public class ModifyAppointmentFormController implements Initializable {
         String formattedStartTime = startTimeTextField.getText().substring(11,16);
         String formattedEndTime = endTimeTextField.getText().substring(11,16);
         startTimeTextField.setText(formattedStartTime);
-        endTimeTextField.setText(formattedStartTime);
+        endTimeTextField.setText(formattedEndTime);
 
+    }
+
+    public static boolean isBetween(LocalTime candidate, LocalTime start, LocalTime end) {
+        return !candidate.isBefore(start) && !candidate.isAfter(end);  // Inclusive.
+    }
+
+    private boolean businessHours() {
+
+        String localAppointmentStartDateTime = startDateTimePicker.getValue() + " " + startTimeTextField.getText();
+        String localAppointmentEndDateTime = endDateTimePicker.getValue() + " " + endTimeTextField.getText();
+
+        System.out.println("LOCAL TIME: " + localAppointmentStartDateTime + " " + localAppointmentEndDateTime);
+
+        LocalDateTime estStartDT = LocalDateTime.parse(localAppointmentStartDateTime, datetimeDTF);
+        LocalDateTime estEndDT = LocalDateTime.parse(localAppointmentEndDateTime, datetimeDTF);
+
+        ZonedDateTime localZoneStart = estStartDT.atZone(localZoneID).withZoneSameInstant(estZoneID);
+        ZonedDateTime localZoneEnd = estEndDT.atZone(localZoneID).withZoneSameInstant(estZoneID);
+
+        String ESTAppointmentStartDateTime = localZoneStart.format(datetimeDTF);
+        String ESTAppointmentEndDateTime = localZoneEnd.format(datetimeDTF);
+
+        System.out.println("EST TIME: " + ESTAppointmentStartDateTime + " " + ESTAppointmentEndDateTime);
+
+        String ESTAppointmentStartTime = ESTAppointmentStartDateTime.substring(11,16);
+        String ESTAppointmentEndTime = ESTAppointmentEndDateTime.substring(11,16);
+
+        LocalTime startTime = LocalTime.parse(ESTAppointmentStartTime);
+        LocalTime endTime = LocalTime.parse(ESTAppointmentEndTime);
+
+        // System.out.println(isBetween(startTime, LocalTime.of(8, 0), LocalTime.of(22, 0)));
+        // System.out.println(isBetween(endTime, LocalTime.of(8, 0), LocalTime.of(22, 0)));
+
+
+        if(isBetween(startTime, LocalTime.of(8, 0), LocalTime.of(22, 0)) && isBetween(endTime, LocalTime.of(8, 0), LocalTime.of(22, 0))) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     @FXML
@@ -154,7 +192,17 @@ public class ModifyAppointmentFormController implements Initializable {
             alert.setHeaderText("MISSING INFORMATION");
             alert.setContentText("Missing key information. Please double check that all fields are populated BESIDES Appointment ID.");
             alert.showAndWait();
-        } else {
+        }
+
+        else if (businessHours() == false) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("APPOINTMENT OUTSIDE BUSINESS HOURS");
+            alert.setContentText("The following appointment is being modified/created outside of business hours. Please modify/create the appointment between 08:00 AM - 10:00 PM (22:00) (EST) ");
+            alert.showAndWait();
+        }
+
+        else {
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("CONFIRMATION");

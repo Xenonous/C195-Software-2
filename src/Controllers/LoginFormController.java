@@ -10,11 +10,15 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import java.io.IOException;;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -22,7 +26,35 @@ import java.util.ResourceBundle;
 
 public class LoginFormController implements Initializable {
 
-    public void LoginErrorMessages(String lang) {
+    private void trackUserLoginActivity(boolean isSuccessful) throws IOException {
+
+        LocalTime time = LocalTime.now();
+        // System.out.println("Current time: "+ time);
+
+        LocalDate date = LocalDate.now();
+        // System.out.println("Current date: " + date);
+
+        if(!isSuccessful) {
+
+            String fileName = "login_activity.txt";
+            FileWriter fileWriter = new FileWriter(fileName, true);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            printWriter.write("USER ATTEMPTED LOGIN AT " + time + " ON " + date + ". THE LOGIN WAS UNSUCCESSFUL. \n" );
+            printWriter.close();
+        }
+
+        else if (isSuccessful) {
+            String fileName = "login_activity.txt";
+            FileWriter fileWriter = new FileWriter(fileName, true);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            printWriter.write("USER ATTEMPTED LOGIN AT " + time + " ON " + date + ". THE LOGIN WAS SUCCESSFUL. \n" );
+            printWriter.close();
+        }
+
+    }
+
+    public void LoginErrorMessages(String lang) throws IOException {
+
         if (lang.equals("français")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERREUR");
@@ -128,28 +160,47 @@ public class LoginFormController implements Initializable {
     void onActionLogin(ActionEvent event) throws IOException, SQLException {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
+
         String SQL = "SELECT USER_NAME, PASSWORD FROM USERS";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
         ResultSet rs = ps.executeQuery();
+        rs.next();
+        String validUsername = rs.getString("USER_NAME");
+        String validPassword = rs.getString("PASSWORD");
+        rs.next();
+        String validUsername2 = rs.getString("USER_NAME");
+        String validPassword2 = rs.getString("PASSWORD");
 
-        while (rs.next()) {
-            if (username.equals(rs.getString("USER_NAME")) && password.equals(rs.getString("PASSWORD"))) {
+            if (username.equals(validUsername) && password.equals(validPassword)) {
+                trackUserLoginActivity(true);
                 System.out.println("LOGIN SUCCESSFUL!");
                 stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/fxml/MainMenuForm.fxml"));
                 stage.setScene(new Scene(scene));
                 stage.show();
-                break;
             }
-            else if (!username.equals(rs.getString("USER_NAME")) || !password.equals(rs.getString("PASSWORD"))) {
+
+            else if (username.equals(validUsername2) && password.equals(validPassword2)) {
+                trackUserLoginActivity(true);
+                System.out.println("LOGIN SUCCESSFUL!");
+                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                scene = FXMLLoader.load(getClass().getResource("/fxml/MainMenuForm.fxml"));
+                stage.setScene(new Scene(scene));
+                stage.show();
+
+                }
+
+            else {
+                trackUserLoginActivity(false);
+                System.out.println("LOGIN UNSUCCESSFUL!");
                 LoginErrorMessages(getLocale());
             }
-        }
-
     }
 
     public void initialize(URL url, ResourceBundle rb) {
         getZoneID();
         EnglishToFrench(getLocale());
+
     }
+
 }

@@ -1,8 +1,10 @@
 package Controllers;
 import C195.JDBC;
+import DataAccess.CustomerDataAccess;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -11,9 +13,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class MainMenuFormController {
+public class MainMenuFormController implements Initializable {
     Stage stage;
     Parent scene;
 
@@ -90,6 +95,17 @@ public class MainMenuFormController {
 
         }
 
+    }
+
+    public void initialize(URL url, ResourceBundle rb) {
+
+        try {
+            CustomerDataAccess.getAllCustomers();
+        }
+
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
 }
