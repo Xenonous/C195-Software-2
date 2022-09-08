@@ -31,17 +31,17 @@ public class AddAppointmentFormController implements Initializable {
     Stage stage;
     Parent scene;
 
-    private static DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    private static ZoneId localZoneID = ZoneId.systemDefault();
-    private static ZoneId utcZoneID = ZoneId.of("UTC");
-    private static ZoneId estZoneID = ZoneId.of("US/Eastern");
+    private static final DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final ZoneId localZoneID = ZoneId.systemDefault();
+    private static final ZoneId utcZoneID = ZoneId.of("UTC");
+    private static final ZoneId estZoneID = ZoneId.of("US/Eastern");
 
 
     public static boolean isBetween(LocalTime candidate, LocalTime start, LocalTime end) {
-        return !candidate.isBefore(start) && !candidate.isAfter(end);  // Inclusive.
+        return !candidate.isBefore(start) && !candidate.isAfter(end);
     }
 
-    private boolean businessHours() {
+    private boolean isBusinessHours() {
 
         String localAppointmentStartDateTime = startDateTimePicker.getValue() + " " + startTimeTextField.getText();
         String localAppointmentEndDateTime = endDateTimePicker.getValue() + " " + endTimeTextField.getText();
@@ -172,7 +172,7 @@ public class AddAppointmentFormController implements Initializable {
             alert.showAndWait();
         }
 
-        else if (businessHours() == false) {
+        else if (isBusinessHours() == false) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("APPOINTMENT OUTSIDE BUSINESS HOURS");

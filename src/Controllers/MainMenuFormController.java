@@ -1,6 +1,9 @@
 package Controllers;
 import C195.JDBC;
+import DataAccess.AppointmentDataAccess;
 import DataAccess.CustomerDataAccess;
+import UML.Customer;
+import java.time.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +17,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -22,8 +30,15 @@ public class MainMenuFormController implements Initializable {
     Stage stage;
     Parent scene;
 
+    private static DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static ZoneId localZoneID = ZoneId.systemDefault();
+    private static ZoneId utcZoneID = ZoneId.of("UTC");
+
     @FXML
     private Button CustomerAppointmentsButton;
+
+    @FXML
+    private Button ReportsButton;
 
     @FXML
     private Button customerRecordsButton;
@@ -58,6 +73,14 @@ public class MainMenuFormController implements Initializable {
     void onActionCustomerRecords(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/fxml/CustomerRecordsForm.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
+    @FXML
+    void onActionReports(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/fxml/ReportsForm.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
@@ -99,8 +122,52 @@ public class MainMenuFormController implements Initializable {
 
     public void initialize(URL url, ResourceBundle rb) {
 
+
         try {
-            CustomerDataAccess.getAllCustomers();
+
+            boolean isAppointment = false;
+            LocalDateTime localDateTime = LocalDateTime.now(localZoneID);
+            System.out.println(localDateTime);
+
+            String SQL = "SELECT START,APPOINTMENT_ID FROM APPOINTMENTS";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                LocalDateTime utcStartDT = LocalDateTime.parse(rs.getString(1), datetimeDTF);
+                ZonedDateTime localZoneStart = utcStartDT.atZone(utcZoneID).withZoneSameInstant(localZoneID);
+
+                //System.out.println(localZoneStart);
+                //System.out.println("THE DIFFERENCE BETWEEN THE TWO ARE :" + localDateTime.until(localZoneStart, ChronoUnit.MINUTES));
+
+                long minUntilAppointment = localDateTime.until(localZoneStart, ChronoUnit.MINUTES);
+                if(minUntilAppointment <=15 && minUntilAppointment >= 0) {
+
+                    isAppointment = true;
+                    int appointmentID = rs.getInt(2);
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("WARNING");
+                    alert.setHeaderText("Appointment Soon!");
+                    alert.setContentText("There is an appointment within the next 15min!\n" + "Appointment Information:----------\n" + "Appointment ID: " + appointmentID +"\nAppointment Date and Time: " + localZoneStart);
+                    alert.showAndWait();
+
+                }
+                else {
+
+                    isAppointment = false;
+                    continue;
+                }
+
+            }
+
+            if(!isAppointment) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setHeaderText("No upcoming appointments.");
+                alert.setContentText("There are no upcoming appointments.");
+                alert.showAndWait();
+            }
         }
 
         catch (SQLException throwables) {

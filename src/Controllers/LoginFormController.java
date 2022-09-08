@@ -26,6 +26,9 @@ import java.util.ResourceBundle;
 
 public class LoginFormController implements Initializable {
 
+    Stage stage;
+    Parent scene;
+
     private void trackUserLoginActivity(boolean isSuccessful) throws IOException {
 
         LocalTime time = LocalTime.now();
@@ -109,8 +112,6 @@ public class LoginFormController implements Initializable {
 
     }
 
-    Stage stage;
-    Parent scene;
 
     @FXML
     private Button loginButton;

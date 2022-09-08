@@ -20,7 +20,7 @@
         <Button fx:id="exitButton" layoutX="365.0" layoutY="269.0" mnemonicParsing="false" onAction="#onActionExit" prefHeight="25.0" prefWidth="54.0" text="Exit" />
         <Button fx:id="customerRecordsButton" layoutX="134.0" layoutY="110.0" mnemonicParsing="false" onAction="#onActionCustomerRecords" prefHeight="25.0" prefWidth="152.0" text="Customer Records" />
         <Button fx:id="CustomerAppointmentsButton" layoutX="134.0" layoutY="151.0" mnemonicParsing="false" onAction="#onActionCustomerAppointments" prefHeight="25.0" prefWidth="152.0" text="Customer Appointments" />
-        <Button fx:id="testButton3" layoutX="134.0" layoutY="192.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="152.0" text="Button" />
+        <Button fx:id="ReportsButton" layoutX="134.0" layoutY="192.0" mnemonicParsing="false" onAction="#onActionReports" prefHeight="25.0" prefWidth="152.0" text="Reports" />
         <Separator layoutX="-7.0" layoutY="48.0" prefHeight="14.0" prefWidth="454.0" />
         <Text fx:id="loginSuccessfulText" layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOGIN SUCCESSFUL!">
             <font>
