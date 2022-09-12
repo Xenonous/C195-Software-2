@@ -17,12 +17,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -32,10 +34,53 @@ public class AddAppointmentFormController implements Initializable {
     Parent scene;
 
     private static final DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter specialDateTimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final ZoneId localZoneID = ZoneId.systemDefault();
     private static final ZoneId utcZoneID = ZoneId.of("UTC");
     private static final ZoneId estZoneID = ZoneId.of("US/Eastern");
 
+    private boolean isOverlapping(int selectedCustomerID) throws SQLException {
+
+
+        boolean isOverlapping =  false;
+
+        String appointmentStartDateTime = startDateTimePicker.getValue() + " " + startTimeTextField.getText();
+        String appointmentEndDateTime = endDateTimePicker.getValue() + " " + endTimeTextField.getText();
+
+        LocalDateTime userStartDT  = LocalDateTime.parse(appointmentStartDateTime, datetimeDTF);
+        LocalDateTime userEndDT  = LocalDateTime.parse(appointmentEndDateTime, datetimeDTF);
+
+        String SQL = "SELECT START,END FROM APPOINTMENTS WHERE CUSTOMER_ID = " + selectedCustomerID;
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()) {
+
+
+            LocalDateTime utcStartDT = LocalDateTime.parse(rs.getString(1), specialDateTimeDTF);
+            LocalDateTime utcEndDT = LocalDateTime.parse(rs.getString(2), specialDateTimeDTF);
+
+            ZonedDateTime startDT = utcStartDT.atZone(utcZoneID).withZoneSameInstant(localZoneID);
+            ZonedDateTime endDT = utcEndDT.atZone(utcZoneID).withZoneSameInstant(localZoneID);
+
+
+            if(userStartDT.isAfter(ChronoLocalDateTime.from(startDT)) && userStartDT.isBefore(ChronoLocalDateTime.from(endDT))) {
+                isOverlapping = true;
+                break;
+            }
+            else if (userEndDT.isAfter(ChronoLocalDateTime.from(startDT)) && userEndDT.isBefore(ChronoLocalDateTime.from(endDT))) {
+                isOverlapping = true;
+                break;
+            }
+
+            else {
+                isOverlapping = false;
+            }
+
+        }
+
+        return isOverlapping;
+    }
 
     public static boolean isBetween(LocalTime candidate, LocalTime start, LocalTime end) {
         return !candidate.isBefore(start) && !candidate.isAfter(end);
@@ -76,6 +121,7 @@ public class AddAppointmentFormController implements Initializable {
             return false;
         }
     }
+
 
     @FXML
     private Text addAppointmentText;
@@ -163,8 +209,19 @@ public class AddAppointmentFormController implements Initializable {
     @FXML
     void onActionSaveAppointment(ActionEvent event) throws IOException, SQLException {
 
+        int selectedCustomerID = Integer.parseInt(String.valueOf(customerIDComboBox.getSelectionModel().getSelectedItem()));
 
-        if (titleTextField.getText().isEmpty() || descriptionTextField.getText().isEmpty() || locationTextField.getText().isEmpty() || typeTextField.getText().isEmpty() || startDateTimePicker.toString().isEmpty() || startTimeTextField.getText().isEmpty() || endDateTimePicker.toString().isEmpty() || endTimeTextField.getText().isEmpty() || customerIDComboBox.getSelectionModel().isEmpty() || userIDComboBox.getSelectionModel().isEmpty() || contactComboBox.getSelectionModel().isEmpty()) {
+
+        if (isOverlapping(selectedCustomerID) == true) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("OVERLAPPING APPOINTMENTS");
+            alert.setContentText("The appointment being created is overlapping another appointment by the same customer, please adjust the appointment date/time accordingly.");
+            alert.showAndWait();
+        }
+
+
+        else if (titleTextField.getText().isEmpty() || descriptionTextField.getText().isEmpty() || locationTextField.getText().isEmpty() || typeTextField.getText().isEmpty() || startDateTimePicker.toString().isEmpty() || startTimeTextField.getText().isEmpty() || endDateTimePicker.toString().isEmpty() || endTimeTextField.getText().isEmpty() || customerIDComboBox.getSelectionModel().isEmpty() || userIDComboBox.getSelectionModel().isEmpty() || contactComboBox.getSelectionModel().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("MISSING INFORMATION");
@@ -195,7 +252,6 @@ public class AddAppointmentFormController implements Initializable {
 
                     String contactName = String.valueOf(contactComboBox.getSelectionModel().getSelectedItem());
                     int selectedContactID = AppointmentDataAccess.getContactID(contactName);
-                    int selectedCustomerID = Integer.parseInt(String.valueOf(customerIDComboBox.getSelectionModel().getSelectedItem()));
                     int selectedUserID = Integer.parseInt(String.valueOf(userIDComboBox.getSelectionModel().getSelectedItem()));
 
 
@@ -244,14 +300,13 @@ public class AddAppointmentFormController implements Initializable {
                     alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("ERROR");
                     alert.setHeaderText("DATE/TIME FORMAT ERROR.");
-                    alert.setContentText("Please make sure your start date/time AND end date/time are in the correct formats. \n" + "DATE = 'YYYY-MM-DD' \n" + "TIME = 'HH:MM:SS'");
+                    alert.setContentText("Please make sure your start date/time AND end date/time are in the correct formats. \n" + "DATE = 'YYYY-MM-DD' \n" + "TIME = 'HH:MM'");
                     alert.showAndWait();
                 }
 
             }
         }
     }
-
 
 
     public void initialize(URL url, ResourceBundle rb) {

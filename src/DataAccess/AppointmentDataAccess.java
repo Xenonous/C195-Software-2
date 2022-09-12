@@ -26,6 +26,8 @@ public class AppointmentDataAccess {
 
     private static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
+    private static ObservableList<Appointment> allAppointmentsContact = FXCollections.observableArrayList();
+
     private static ObservableList<Users> allUsers = FXCollections.observableArrayList();
 
     public static int getNewAppointmentID() {
@@ -83,6 +85,91 @@ public class AppointmentDataAccess {
         return allAppointments;
     }
 
+    public static ObservableList<Appointment> getAllAppointmentsContact(int selectedContact) throws SQLException {
+
+        String SQL = "SELECT * FROM APPOINTMENTS WHERE CONTACT_ID = " + selectedContact;
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
+        ResultSet rs = ps.executeQuery();
+
+        ObservableList<Appointment> allAppointmentsContact = FXCollections.observableArrayList();
+
+        while (rs.next()) {
+            appointmentID = rs.getInt(1);
+            String appointmentTitle = rs.getString(2);
+            String appointmentDescription = rs.getString(3);
+            String appointmentLocation = rs.getString(4);
+            String appointmentType = rs.getString(5);
+            String appointmentStartDateTime = rs.getString(6);
+            String appointmentEndDateTime = rs.getString(7);
+            int customerID = rs.getInt(12);
+            int userID = rs.getInt(13);
+            int contactID = rs.getInt(14);
+
+            // System.out.println(appointmentStartDateTime + " " + appointmentEndDateTime);
+
+            LocalDateTime utcStartDT = LocalDateTime.parse(appointmentStartDateTime, datetimeDTF);
+            LocalDateTime utcEndDT = LocalDateTime.parse(appointmentEndDateTime, datetimeDTF);
+
+            ZonedDateTime localZoneStart = utcStartDT.atZone(utcZoneID).withZoneSameInstant(localZoneID);
+            ZonedDateTime localZoneEnd = utcEndDT.atZone(utcZoneID).withZoneSameInstant(localZoneID);
+
+            String localAppointmentStartDateTime = localZoneStart.format(datetimeDTF);
+            String localAppointmentEndDateTime = localZoneEnd.format(datetimeDTF);
+
+            // System.out.println(localAppointmentStartDateTime + " " + localAppointmentEndDateTime);
+
+            Appointment newAppointment = new Appointment(appointmentID,appointmentTitle,appointmentDescription,appointmentLocation,appointmentType,localAppointmentStartDateTime,localAppointmentEndDateTime,customerID,userID,contactID);
+            allAppointmentsContact.add(newAppointment);
+
+            // System.out.println(rs.getInt(1) + " " + (rs.getString(2)) + " " + (rs.getString(3)) + " " + (rs.getString(4)) + " " + (rs.getString(5)));
+
+        }
+        return allAppointmentsContact;
+
+    }
+
+    public static ObservableList<Appointment> getAllAppointmentsCustomer(Customer selectedCustomer) throws SQLException {
+
+        String SQL = "SELECT * FROM APPOINTMENTS WHERE CUSTOMER_ID = " + selectedCustomer;
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
+        ResultSet rs = ps.executeQuery();
+
+        ObservableList<Appointment> allAppointmentsCustomer = FXCollections.observableArrayList();
+
+        while (rs.next()) {
+            appointmentID = rs.getInt(1);
+            String appointmentTitle = rs.getString(2);
+            String appointmentDescription = rs.getString(3);
+            String appointmentLocation = rs.getString(4);
+            String appointmentType = rs.getString(5);
+            String appointmentStartDateTime = rs.getString(6);
+            String appointmentEndDateTime = rs.getString(7);
+            int customerID = rs.getInt(12);
+            int userID = rs.getInt(13);
+            int contactID = rs.getInt(14);
+
+            // System.out.println(appointmentStartDateTime + " " + appointmentEndDateTime);
+
+            LocalDateTime utcStartDT = LocalDateTime.parse(appointmentStartDateTime, datetimeDTF);
+            LocalDateTime utcEndDT = LocalDateTime.parse(appointmentEndDateTime, datetimeDTF);
+
+            ZonedDateTime localZoneStart = utcStartDT.atZone(utcZoneID).withZoneSameInstant(localZoneID);
+            ZonedDateTime localZoneEnd = utcEndDT.atZone(utcZoneID).withZoneSameInstant(localZoneID);
+
+            String localAppointmentStartDateTime = localZoneStart.format(datetimeDTF);
+            String localAppointmentEndDateTime = localZoneEnd.format(datetimeDTF);
+
+            // System.out.println(localAppointmentStartDateTime + " " + localAppointmentEndDateTime);
+
+            Appointment newAppointment = new Appointment(appointmentID,appointmentTitle,appointmentDescription,appointmentLocation,appointmentType,localAppointmentStartDateTime,localAppointmentEndDateTime,customerID,userID,contactID);
+            allAppointmentsCustomer.add(newAppointment);
+
+            // System.out.println(rs.getInt(1) + " " + (rs.getString(2)) + " " + (rs.getString(3)) + " " + (rs.getString(4)) + " " + (rs.getString(5)));
+
+        }
+        return allAppointmentsCustomer;
+
+    }
 
     public static ObservableList<Contacts> getAllContacts() throws SQLException {
         ObservableList<Contacts> allContacts = FXCollections.observableArrayList();
