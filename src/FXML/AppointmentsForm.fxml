@@ -41,8 +41,8 @@
             <ToggleGroup fx:id="appointmentSort" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton layoutX="355.0" layoutY="61.0" mnemonicParsing="false" onAction="#onActionAppointmentMonthRadioButton" text="Appointment Month" toggleGroup="$appointmentSort" />
-      <RadioButton layoutX="511.0" layoutY="61.0" mnemonicParsing="false" onAction="#onActionAppointmentWeekRadioButton" text="Appointment Week" toggleGroup="$appointmentSort" />
+      <RadioButton layoutX="355.0" layoutY="61.0" mnemonicParsing="false" onAction="#onActionAppointmentMonthRadioButton" text="Appointments this Month" toggleGroup="$appointmentSort" />
+      <RadioButton layoutX="532.0" layoutY="61.0" mnemonicParsing="false" onAction="#onActionAppointmentWeekRadioButton" text="Appointments this Week" toggleGroup="$appointmentSort" />
       <Text layoutX="93.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sort by..." wrappingWidth="56.13671875">
          <font>
             <Font size="14.0" />

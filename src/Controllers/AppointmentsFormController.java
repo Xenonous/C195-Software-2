@@ -176,17 +176,17 @@ public class AppointmentsFormController implements Initializable {
     }
 
     @FXML
-    void onActionAppointmentMonthRadioButton(ActionEvent event) {
-        appointmentStartDateTimeColumn.setSortType(TableColumn.SortType.ASCENDING);
-        appointmentTableView.getSortOrder().add(appointmentStartDateTimeColumn);
-        appointmentTableView.sort();
+    void onActionAppointmentMonthRadioButton(ActionEvent event) throws SQLException {
+
+        appointmentTableView.setItems(AppointmentDataAccess.getAllAppointmentsMonth());
+
     }
 
     @FXML
-    void onActionAppointmentWeekRadioButton(ActionEvent event) {
-        appointmentStartDateTimeColumn.setSortType(TableColumn.SortType.ASCENDING);
-        appointmentTableView.getSortOrder().add(appointmentStartDateTimeColumn);
-        appointmentTableView.sort();
+    void onActionAppointmentWeekRadioButton(ActionEvent event) throws SQLException {
+
+        appointmentTableView.setItems(AppointmentDataAccess.getAllAppointmentsWeek());
+
     }
 
 
