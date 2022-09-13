@@ -1,5 +1,10 @@
 package UML;
 
+/**
+ * UML class
+ *
+ * @author Dylan Franklin
+ */
 public class Customer {
     private int customerID;
     private String customerName;
@@ -9,6 +14,17 @@ public class Customer {
     private String customerCountry;
     private String customerFirstLevelDivision;
 
+    /**
+     * Constructor for Customers
+     *
+     * @param customerID
+     * @param customerName
+     * @param customerAddress
+     * @param customerPostalCode
+     * @param customerPhoneNumber
+     * @param customerCountry
+     * @param customerFirstLevelDivision
+     */
     public Customer(int customerID, String customerName, String customerAddress, String customerPostalCode, String customerPhoneNumber, String customerCountry, String customerFirstLevelDivision) {
 
         this.customerID = customerID;

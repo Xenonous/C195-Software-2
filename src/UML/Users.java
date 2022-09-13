@@ -1,5 +1,10 @@
 package UML;
 
+/**
+ * UML class
+ *
+ * @author Dylan Franklin
+ */
 public class Users {
     private int userID;
 
@@ -7,6 +12,11 @@ public class Users {
     // private String password;
 
 
+    /**
+     * Constructor for Users
+     *
+     * @param userID
+     */
     public Users(int userID /* , String username, String password */) {
         this.userID = userID;
         // this.username = username;

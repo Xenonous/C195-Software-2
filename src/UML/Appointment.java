@@ -2,8 +2,11 @@ package UML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.time.LocalDate;
-
+/**
+ * UML class
+ *
+ * @author Dylan Franklin
+ */
 public class Appointment {
 
     private ObservableList<Customer> associatedCustomer = FXCollections.observableArrayList();
@@ -20,6 +23,20 @@ public class Appointment {
     private int contactID;
 
 
+    /**
+     * Constructor for Appointments
+     *
+     * @param appointmentID
+     * @param appointmentTitle
+     * @param appointmentDescription
+     * @param appointmentLocation
+     * @param appointmentType
+     * @param appointmentStartDateTime
+     * @param appointmentEndDateTime
+     * @param customerID
+     * @param userID
+     * @param contactID
+     */
     public Appointment(int appointmentID, String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, String appointmentStartDateTime, String appointmentEndDateTime, int customerID, int userID, int contactID) {
         this.appointmentID = appointmentID;
         this.appointmentTitle = appointmentTitle;
@@ -34,7 +51,6 @@ public class Appointment {
         this.contactID = contactID;
     }
 
-    //APPOINTMENT ID
     public int getAppointmentID() {
         return appointmentID;
     }

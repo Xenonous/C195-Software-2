@@ -1,10 +1,20 @@
 package UML;
 
+/**
+ * UML class
+ *
+ * @author Dylan Franklin
+ */
 public class Contacts {
     private String contactName;
     // private int contactID;
     // private String contactEmail;
 
+    /**
+     * Constructor for Contacts
+     *
+     * @param contactName
+     */
     public Contacts(String contactName/* , int contactID , String contactEmail */) {
 
         this.contactName = contactName;

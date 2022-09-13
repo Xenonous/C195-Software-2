@@ -9,16 +9,35 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * DataAccess class
+ *
+ * @author Dylan Franklin
+ */
 public class CustomerDataAccess {
 
     private static int customerID = 10;
 
+    /**
+     * ObservableList for all Customers
+     */
     private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
 
+    /**
+     * ObservableList for all countries
+     */
     private static ObservableList<Countries> allCountries = FXCollections.observableArrayList();
 
+    /**
+     * ObservableList for all divisions
+     */
     private static ObservableList<FirstLevelDivisions> allDivisions = FXCollections.observableArrayList();
 
+    /**
+     * Starting ID for Customer
+     *
+     * @return
+     */
     public static int getNewCustomerID() {
 
         customerID = customerID + 1;
@@ -26,12 +45,12 @@ public class CustomerDataAccess {
         return customerID;
     }
 
-    public static void addCustomer(Customer newCustomer) throws SQLException {
-
-        allCustomers.add(newCustomer);
-
-    }
-
+    /**
+     * Method that gets all Customers from the database.
+     *
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Customer> getAllCustomers() throws SQLException {
         String SQL = "SELECT * FROM CUSTOMERS";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
@@ -59,18 +78,12 @@ public class CustomerDataAccess {
         return allCustomers;
     }
 
-    public static void updateCustomer(int customerID, Customer customer) {
-
-        allCustomers.set(customerID, customer);
-
-    }
-
-    public static void deleteCustomer(Customer selectedCustomer) {
-
-        allCustomers.remove(selectedCustomer);
-
-    }
-
+    /**
+     *
+     * Method that gets all Countries from the database.
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Countries> getAllCountries() throws SQLException {
         ObservableList<Countries> allCountries = FXCollections.observableArrayList();
 
@@ -88,6 +101,13 @@ public class CustomerDataAccess {
         return allCountries;
     }
 
+    /**
+     * Method that gets all first-level divisions from the database.
+     *
+     * @param selectedCountry
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<FirstLevelDivisions> getFirstLevelDivisions(String selectedCountry) throws SQLException {
         ObservableList<FirstLevelDivisions> allFirstLevelDivisions = FXCollections.observableArrayList();
 
@@ -135,6 +155,13 @@ public class CustomerDataAccess {
         return allFirstLevelDivisions;
     }
 
+    /**
+     * Method that fetches the division ID from the database given the first-level division name.
+     *
+     * @param firstLevelDivisionName
+     * @return
+     * @throws SQLException
+     */
     public static int getDivisionID(String firstLevelDivisionName) throws SQLException {
         int divisionID = 0;
         String SQL = "SELECT DIVISION_ID FROM FIRST_LEVEL_DIVISIONS WHERE DIVISION = " + "'" + firstLevelDivisionName + "'";

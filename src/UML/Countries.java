@@ -1,9 +1,19 @@
 package UML;
 
+/**
+ * UML class
+ *
+ * @author Dylan Franklin
+ */
 public class Countries {
     private String countryName;
     // private int countryID;
 
+    /**
+     * Constructor for Countries
+     *
+     * @param countryName
+     */
      public Countries(String countryName/* , int countryID */) {
 
          this.countryName = countryName;

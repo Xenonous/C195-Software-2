@@ -1,5 +1,4 @@
 package DataAccess;
-
 import C195.JDBC;
 import UML.*;
 import javafx.collections.FXCollections;
@@ -13,6 +12,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
 
+/**
+ * DataAccess class
+ *
+ * @author Dylan Franklin
+ */
 public class AppointmentDataAccess {
 
     private static DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -21,12 +25,26 @@ public class AppointmentDataAccess {
 
     private static int appointmentID = 0;
 
+    /**
+     * An ObservableList of all Appointments fetched.
+     */
     private static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
+    /**
+     * An ObservableList of all Appointment contacts fetched.
+     */
     private static ObservableList<Appointment> allAppointmentsContact = FXCollections.observableArrayList();
 
+    /**
+     * An ObservableList of all Users fetched.
+     */
     private static ObservableList<Users> allUsers = FXCollections.observableArrayList();
 
+    /**
+     * Starting ID for Appointment.
+     *
+     * @return
+     */
     public static int getNewAppointmentID() {
 
         appointmentID = appointmentID + 1;
@@ -34,12 +52,13 @@ public class AppointmentDataAccess {
         return appointmentID;
     }
 
-    public static void addAppointment(Appointment newAppointment) throws SQLException {
-
-        allAppointments.add(newAppointment);
-
-    }
-
+    /**
+     * Method that gets all Appointments from the database and translates them from the time that they were stored in the
+     *     database (UTC), to LocalTime.
+     *
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Appointment> getAllAppointments() throws SQLException {
 
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
@@ -82,6 +101,13 @@ public class AppointmentDataAccess {
         return allAppointments;
     }
 
+    /**
+     * Method that gets all Appointment contacts from the database.
+     *
+     * @param selectedContact
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Appointment> getAllAppointmentsContact(int selectedContact) throws SQLException {
 
         ObservableList<Appointment> allAppointmentsContact = FXCollections.observableArrayList();
@@ -125,6 +151,13 @@ public class AppointmentDataAccess {
 
     }
 
+    /**
+     * Method that gets all Appointments given the 'selectedCustomer' ID from the database.
+     *
+     * @param selectedCustomer
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Appointment> getAllAppointmentsCustomer(Customer selectedCustomer) throws SQLException {
 
         ObservableList<Appointment> allAppointmentsCustomer = FXCollections.observableArrayList();
@@ -169,6 +202,12 @@ public class AppointmentDataAccess {
 
     }
 
+    /**
+     * Method that gets all Appointments in the current month from the database.
+     *
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Appointment> getAllAppointmentsMonth() throws SQLException {
 
         ObservableList<Appointment> allAppointmentsMonth = FXCollections.observableArrayList();
@@ -212,6 +251,12 @@ public class AppointmentDataAccess {
         return allAppointmentsMonth;
     }
 
+    /**
+     * Method that gets all Appointments in the current week from the database.
+     *
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Appointment> getAllAppointmentsWeek() throws SQLException {
 
         ObservableList<Appointment> allAppointmentsWeek = FXCollections.observableArrayList();
@@ -259,6 +304,12 @@ public class AppointmentDataAccess {
         return allAppointmentsWeek;
     }
 
+    /**
+     * Method that gets all contacts from the database, which is part of Appointments.
+     *
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Contacts> getAllContacts() throws SQLException {
 
         ObservableList<Contacts> allContacts = FXCollections.observableArrayList();
@@ -277,6 +328,12 @@ public class AppointmentDataAccess {
         return allContacts;
     }
 
+    /**
+     * Method that gets all users from the database, which is part of Appointments.
+     *
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Users> getAllUsers() throws SQLException {
 
         ObservableList<Users> allUsers = FXCollections.observableArrayList();
@@ -295,6 +352,13 @@ public class AppointmentDataAccess {
         return allUsers;
     }
 
+    /**
+     * Method that given the contactName, will fetch the associated contactID from the database.
+     *
+     * @param contactName
+     * @return
+     * @throws SQLException
+     */
     public static int getContactID(String contactName) throws SQLException {
         int contactID = 0;
         String SQL = "SELECT CONTACT_ID FROM CONTACTS WHERE CONTACT_NAME = " + "'" + contactName + "'";

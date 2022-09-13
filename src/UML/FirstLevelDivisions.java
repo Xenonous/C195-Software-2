@@ -1,9 +1,19 @@
 package UML;
 
+/**
+ * UML class
+ *
+ * @author Dylan Franklin
+ */
 public class FirstLevelDivisions {
     private String divisionName;
     // private int divisionID;
 
+    /**
+     * Constructor for FirstLevelDivisions
+     *
+     * @param divisionName
+     */
     public FirstLevelDivisions(String divisionName/* , int divisionID */) {
 
         this.divisionName = divisionName;
