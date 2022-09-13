@@ -21,18 +21,23 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * FXML Controller class
+ *
+ * @author Dylan Franklin
+ */
 public class AddCustomerRecordFormController implements Initializable {
     Stage stage;
     Parent scene;
 
+    /**
+     * Information text.
+     */
     @FXML
     private Text addCustomerText;
 
     @FXML
     private Text addressText;
-
-    @FXML
-    private TextField addressTextField;
 
     @FXML
     private Text IDText;
@@ -44,33 +49,59 @@ public class AddCustomerRecordFormController implements Initializable {
     private Text nameText;
 
     @FXML
-    private TextField nameTextField;
-
-    @FXML
     private Text phoneNumberText;
-
-    @FXML
-    private TextField phoneNumberTextField;
 
     @FXML
     private Text postalCodeText;
 
     @FXML
-    private TextField postalNumberTextField;
-
-    @FXML
     private Text firstlevelDivisionText;
-
-    @FXML
-    private ComboBox<FirstLevelDivisions> firstlevelDivisionComboBox;
 
     @FXML
     private Text countryText;
 
+    /**
+     * TextField used to collect the Customer name.
+     */
+    @FXML
+    private TextField nameTextField;
+
+    /**
+     * TextField used to collect the Customer phone-number.
+     */
+    @FXML
+    private TextField phoneNumberTextField;
+
+    /**
+     * TextField used to collect the Customer postal code
+     */
+    @FXML
+    private TextField postalNumberTextField;
+
+    /**
+     * TextField used to collect the Customer address
+     */
+    @FXML
+    private TextField addressTextField;
+
+    /**
+     * ComboBox used to collect the Customers country. Used to determine what will be shown in the First-Level Division ComboBox.
+     */
     @FXML
     private ComboBox<Countries> countryComboBox;
 
+    /**
+     * ComboBox used to collect the Customer First-Level Division. Pre-populates based on what the user selects in the country combobox.
+     */
+    @FXML
+    private ComboBox<FirstLevelDivisions> firstlevelDivisionComboBox;
 
+    /**
+     * Returns the user to the 'CustomerRecords.fxml' menu
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionBackCustomersRecordForm(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -79,6 +110,13 @@ public class AddCustomerRecordFormController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Checks for an input from the 'countryComboBox' and uses that to populate the 'firstlevelDivisionsComboBox'.
+     *     If input is missing, an alert is shown.
+     *
+     * @param mouseEvent
+     * @throws SQLException
+     */
     @FXML
     public void onActionDisplayFirstLevelDivisions(javafx.scene.input.MouseEvent mouseEvent) throws SQLException {
         // System.out.println("Divisions has been clicked.");
@@ -98,6 +136,15 @@ public class AddCustomerRecordFormController implements Initializable {
 
     }
 
+    /**
+     * Logic checks to see if all TextFields are filled. If there's any missing information, an alert will show telling
+     *     the user that the error is. If all information is entered correctly, the Customer will be added to the database and the
+     *     user will be sent back to the 'CustomerRecordsForm.fxml' form.
+     *
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void onActionAddCustomer(ActionEvent event) throws IOException, SQLException {
 
@@ -145,7 +192,12 @@ public class AddCustomerRecordFormController implements Initializable {
         }
     }
 
-
+    /**
+     * ComboBox setups.
+     *
+     * @param url
+     * @param rb
+     */
     public void initialize(URL url, ResourceBundle rb) {
 
         try {

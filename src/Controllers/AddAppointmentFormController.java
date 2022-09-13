@@ -29,6 +29,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * FXML Controller class
+ *
+ * @author Dylan Franklin
+ */
 public class AddAppointmentFormController implements Initializable {
     Stage stage;
     Parent scene;
@@ -39,6 +44,14 @@ public class AddAppointmentFormController implements Initializable {
     private static final ZoneId utcZoneID = ZoneId.of("UTC");
     private static final ZoneId estZoneID = ZoneId.of("US/Eastern");
 
+    /**
+     * Checks to see if any attempted created appointment is overlapping an already existing appointment. 'isOverlapping' is
+     *     a boolean that's used as the return statement.
+     *
+     * @param selectedCustomerID
+     * @return
+     * @throws SQLException
+     */
     private boolean isOverlapping(int selectedCustomerID) throws SQLException {
 
 
@@ -82,10 +95,25 @@ public class AddAppointmentFormController implements Initializable {
         return isOverlapping;
     }
 
+    /**
+     * Method used to compare three LocalTime values. Used to determine if the candidate (user input value), is between the start (8AM) and end (10PM) values.
+     *
+     * @param candidate
+     * @param start
+     * @param end
+     * @return
+     */
     public static boolean isBetween(LocalTime candidate, LocalTime start, LocalTime end) {
         return !candidate.isBefore(start) && !candidate.isAfter(end);
     }
 
+    /**
+     * Gets the users requested appointment local start/end times and translates them to eastern time (EST).
+     *     The business operates on EST, so the conversion is needed. Once all the information is gathered, it is sent
+     *     to the "isBetween" method for further evaluation.
+     *
+     * @return
+     */
     private boolean isBusinessHours() {
 
         String localAppointmentStartDateTime = startDateTimePicker.getValue() + " " + startTimeTextField.getText();
@@ -123,6 +151,9 @@ public class AddAppointmentFormController implements Initializable {
     }
 
 
+    /**
+     * Information text.
+     */
     @FXML
     private Text addAppointmentText;
 
@@ -133,71 +164,113 @@ public class AddAppointmentFormController implements Initializable {
     private Text customerIDText;
 
     @FXML
-    private ComboBox<Customer> customerIDComboBox;
-
-    @FXML
     private Text descriptionText;
-
-    @FXML
-    private TextField descriptionTextField;
 
     @FXML
     private Text idText;
 
     @FXML
-    private TextField idTextField;
-
-    @FXML
     private Text locationText;
-
-    @FXML
-    private TextField locationTextField;
 
     @FXML
     private Text titleText;
 
     @FXML
-    private TextField titleTextField;
-
-    @FXML
     private Text userIDText;
-
-    @FXML
-    private ComboBox<Users> userIDComboBox;
 
     @FXML
     private Text typeText;
 
     @FXML
-    private TextField typeTextField;
-
-    @FXML
     private Text startDateText;
-
-    @FXML
-    private DatePicker startDateTimePicker;
 
     @FXML
     private Text startTimeText;
 
     @FXML
-    private TextField startTimeTextField;
-
-    @FXML
     private Text endDateText;
-
-    @FXML
-    private DatePicker endDateTimePicker;
 
     @FXML
     private Text endTimeText;
 
+    /**
+     * ComboBox used to collect the Customer ID that will be associated with the Appointment ID.
+     */
+    @FXML
+    private ComboBox<Customer> customerIDComboBox;
+
+    /**
+     * TextField used to collect the Appointment description.
+     */
+    @FXML
+    private TextField descriptionTextField;
+
+    /**
+     * TextField used to collect the Appointment ID (NOT USED).
+     */
+    @FXML
+    private TextField idTextField;
+
+    /**
+     * TextField used to collect the Appointment location
+     */
+    @FXML
+    private TextField locationTextField;
+
+    /**
+     * TextField used to collect the Appointment title.
+     */
+    @FXML
+    private TextField titleTextField;
+
+    /**
+     * ComboBox used to collect the User ID that will be associated with the Appointment ID
+     */
+    @FXML
+    private ComboBox<Users> userIDComboBox;
+
+    /**
+     * TextField used to collect the Appointment type
+     */
+    @FXML
+    private TextField typeTextField;
+
+    /**
+     * DatePicker used to collect the starting date of the Appointment.
+     */
+    @FXML
+    private DatePicker startDateTimePicker;
+
+    /**
+     * TextField used to collect the starting time of the Appointment in 'HH:MM'.
+     */
+    @FXML
+    private TextField startTimeTextField;
+
+    /**
+     * DatePicker used to collect the ending date of the Appointment
+     */
+    @FXML
+    private DatePicker endDateTimePicker;
+
+    /**
+     * TextField used to collect the ending time of the Appointment in 'HH:MM'.
+     */
     @FXML
     private TextField endTimeTextField;
 
+    /**
+     * ComboBox used to collect the Contact (name) associated with the Appointment.
+     */
     @FXML
     private ComboBox<Contacts> contactComboBox;
 
+    /**
+     * Returns the user to the 'AppointmentsForm.fxml' menu
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionBackAppointmentsForm(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -206,6 +279,15 @@ public class AddAppointmentFormController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Logic checks to see if all TextFields are filled, ensures there's no overlapping appointments, and makes sure the requested appointment is within business hours.
+     *     If there's an error regarding any of these, an alert will show telling the user what the error is. If all information is entered correctly,
+     *     the appointment is translated to UTC and stored in the database and the user is sent back to the 'AppointmentsForm.fxml' menu.
+     *
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void onActionSaveAppointment(ActionEvent event) throws IOException, SQLException {
 
@@ -308,7 +390,12 @@ public class AddAppointmentFormController implements Initializable {
         }
     }
 
-
+    /**
+     * ComboBox setups.
+     *
+     * @param url
+     * @param rb
+     */
     public void initialize(URL url, ResourceBundle rb) {
         try {
             contactComboBox.setPromptText("Select Contact");

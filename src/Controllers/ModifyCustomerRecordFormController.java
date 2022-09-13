@@ -11,7 +11,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -23,21 +22,23 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * FXML Controller class
+ *
+ * @author Dylan Franklin
+ */
 public class ModifyCustomerRecordFormController implements Initializable {
     Stage stage;
     Parent scene;
 
+    /**
+     * Information Text
+     */
     @FXML
     private Text IDText;
 
     @FXML
-    private TextField IDTextField;
-
-    @FXML
     private Text addressText;
-
-    @FXML
-    private TextField addressTextField;
 
     @FXML
     private Button backButton;
@@ -52,32 +53,80 @@ public class ModifyCustomerRecordFormController implements Initializable {
     private Text nameText;
 
     @FXML
-    private TextField nameTextField;
-
-    @FXML
     private Text phoneNumberText;
-
-    @FXML
-    private TextField phoneNumberTextField;
 
     @FXML
     private Text postalCodeText;
 
     @FXML
-    private TextField postalNumberTextField;
+    private Text countryText;
 
     @FXML
     private Text firstlevelDivisionText;
 
+    /**
+     * TextField used to collect the Customer name
+     */
     @FXML
-    private ComboBox<FirstLevelDivisions> firstlevelDivisionComboBox;
+    private TextField nameTextField;
 
+    /**
+     * TextField used to collect the Customer ID
+     */
     @FXML
-    private Text countryText;
+    private TextField IDTextField;
 
+    /**
+     * TextField used to collect the Customer address
+     */
+    @FXML
+    private TextField addressTextField;
+
+    /**
+     * TextField used to collect the Customer phone number
+     */
+    @FXML
+    private TextField phoneNumberTextField;
+
+    /**
+     * TextField used to collect the Customer postal code
+     */
+    @FXML
+    private TextField postalNumberTextField;
+
+    /**
+     * ComboBox used to collect the Customer country
+     */
     @FXML
     private ComboBox<Countries> countryComboBox;
 
+    /**
+     * ComboBox used to collect the Customer first-level division
+     */
+    @FXML
+    private ComboBox<FirstLevelDivisions> firstlevelDivisionComboBox;
+
+    /**
+     * Returns the user to the 'CustomerRecords.fxml' menu
+     *
+     * @param event
+     * @throws IOException
+     */
+    @FXML
+    void onActionBackCustomersRecordForm(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/fxml/CustomerRecordsForm.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
+    /**
+     * Checks for an input from the 'countryComboBox' and uses that to populate the 'firstlevelDivisionsComboBox'.
+     *     If input is missing, an alert is shown.
+     *
+     * @param mouseEvent
+     * @throws SQLException
+     */
     @FXML
     public void onActionDisplayFirstLevelDivisions(javafx.scene.input.MouseEvent mouseEvent) throws SQLException {
         // System.out.println("Divisions has been clicked.");
@@ -96,14 +145,15 @@ public class ModifyCustomerRecordFormController implements Initializable {
         }
     }
 
-    @FXML
-    void onActionBackCustomersRecordForm(ActionEvent event) throws IOException {
-        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/fxml/CustomerRecordsForm.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
-    }
-
+    /**
+     * Logic checks to see if all TextFields are filled. If there's any missing information, an alert will show telling
+     *     the user that the error is. If all information is entered correctly, the Customer will be modified in the database and the
+     *     user will be sent back to the 'CustomerRecordsForm.fxml' form.
+     *
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void onActionModifyCustomer(ActionEvent event) throws IOException, SQLException {
         if (nameTextField.getText().isEmpty() || addressTextField.getText().isEmpty() || postalNumberTextField.getText().isEmpty() || phoneNumberTextField.getText().isEmpty() || countryComboBox.getSelectionModel().isEmpty() || firstlevelDivisionComboBox.getSelectionModel().isEmpty()) {
@@ -152,6 +202,12 @@ public class ModifyCustomerRecordFormController implements Initializable {
         // UPDATE CUSTOMERS SET CUSTOMER_ID = 8, CUSTOMER_NAME = 'Justice Franklin'
     }
 
+    /**
+     * Populates the TextFields/ComboBox with values given from the Customer form.
+     *
+     * @param selectedCustomer
+     * @throws SQLException
+     */
     public void sendCustomer(Customer selectedCustomer) throws SQLException {
 
 
@@ -163,7 +219,12 @@ public class ModifyCustomerRecordFormController implements Initializable {
         // Country and First-Level ComboBox?
     }
 
-
+    /**
+     * ComboBox setups.
+     *
+     * @param url
+     * @param rb
+     */
     public void initialize(URL url, ResourceBundle rb) {
 
         try {

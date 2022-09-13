@@ -5,8 +5,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * JavaFX App
+ *
+ * @author Dylan Franklin
+ */
+
 public class Main extends Application {
 
+    /**
+     * Running the "start" method finds and creates/opens the FXML file and loads the scene.
+     *
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../FXML/LoginForm.fxml"));
@@ -16,6 +28,11 @@ public class Main extends Application {
     }
 
 
+    /**
+     * 'main' is where execution begins. A connection to the database is made first, then the application is launched.
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         JDBC.makeConnection();
         launch(args);

@@ -1,8 +1,6 @@
 package Controllers;
 import C195.JDBC;
-import DataAccess.CustomerDataAccess;
 import UML.Customer;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,10 +20,23 @@ import javafx.event.ActionEvent;
 import static DataAccess.CustomerDataAccess.getAllCustomers;
 
 
+/**
+ * FXML Controller class
+ *
+ * @author Dylan Franklin
+ */
 public class CustomerRecordsFormController implements Initializable {
     Stage stage;
     Parent scene;
 
+    /**
+     * Foreign Key checker that is executed before a user attempts to remove a Customer. Checks to see if there are any
+     *     Appointments associated with a Customer.
+     *
+     * @param customerID
+     * @return
+     * @throws SQLException
+     */
     private boolean foreignKeyCheck(int customerID) throws SQLException {
         String SQL = "SELECT CUSTOMER_ID FROM APPOINTMENTS WHERE CUSTOMER_ID = " + customerID;
         PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
@@ -40,6 +51,56 @@ public class CustomerRecordsFormController implements Initializable {
                 }
     }
 
+    //--------------------Customer TableView-----------------------------
+
+    @FXML
+    private TableView<Customer> customerTableView; //Customer
+
+    /**
+     * Customer ID column
+     */
+    @FXML
+    private TableColumn<Customer,Integer> customerIDColumn;
+
+    /**
+     * Customer name column
+     */
+    @FXML
+    private TableColumn<Customer,String> customerNameColumn;
+
+    /**
+     * Customer address column
+     */
+    @FXML
+    private TableColumn<Customer,String> customerAddressColumn;
+
+    /**
+     * Customer postal code column
+     */
+    @FXML
+    private TableColumn<Customer,Integer> customerPostalCodeColumn;
+
+    /**
+     * Customer phone number column
+     */
+    @FXML
+    private TableColumn<Customer,String> customerPhoneNumberColumn;
+
+    /**
+     * Customer country column
+     */
+    @FXML
+    private TableColumn<Customer,String> customerCountryColumn;
+
+    /**
+     * Customer first-level division column
+     */
+    @FXML
+    private TableColumn<Customer,String> customerFirstLevelDivisionColumn;
+
+    /**
+     * Buttons
+     */
     @FXML
     private Button addCustomerButton;
 
@@ -47,35 +108,17 @@ public class CustomerRecordsFormController implements Initializable {
     private Button backButton;
 
     @FXML
-    private TableView<Customer> customerTableView; //Customer
-
-    @FXML
-    private TableColumn<Customer,Integer> customerIDColumn;
-
-    @FXML
-    private TableColumn<Customer,String> customerNameColumn;
-
-    @FXML
-    private TableColumn<Customer,String> customerAddressColumn;
-
-    @FXML
-    private TableColumn<Customer,Integer> customerPostalCodeColumn;
-
-    @FXML
-    private TableColumn<Customer,String> customerPhoneNumberColumn;
-
-    @FXML
-    private TableColumn<Customer,String> customerCountryColumn;
-
-    @FXML
-    private TableColumn<Customer,String> customerFirstLevelDivisionColumn;
-
-    @FXML
     private Button deleteCustomerButton;
 
     @FXML
     private Button modifyCustomerButton;
 
+    /**
+     * Returns the user to the 'MainMenuForm.fxml' menu.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionBackMainMenu(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -84,6 +127,12 @@ public class CustomerRecordsFormController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Brings the user to the 'AddCustomerForm.fxml' menu.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionAddCustomer(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -92,6 +141,13 @@ public class CustomerRecordsFormController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Brings the user to the 'ModifyCustomerForm.fxml' menu.
+     *
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void onActionModifyCustomer(ActionEvent event) throws IOException, SQLException {
 
@@ -121,6 +177,13 @@ public class CustomerRecordsFormController implements Initializable {
         }
     }
 
+    /**
+     * Deletes a selected Customer upon confirming that you want to do so. Checks to see if th selected Customer
+     *     has any appointments associated with them. If they do, an alert will show.
+     *
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     void onActionDeleteCustomer(ActionEvent event) throws SQLException {
 
@@ -173,6 +236,12 @@ public class CustomerRecordsFormController implements Initializable {
         }
     }
 
+    /**
+     * Setup for the customerTableView and populates the customerTableView with all customers in the database.
+     *
+     * @param url
+     * @param rb
+     */
     public void initialize(URL url, ResourceBundle rb) {
 
         try {

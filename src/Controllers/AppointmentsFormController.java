@@ -20,57 +20,97 @@ import java.time.ZoneId;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * FXML Controller class
+ *
+ * @author Dylan Franklin
+ */
 public class AppointmentsFormController implements Initializable {
     Stage stage;
     Parent scene;
 
+    /**
+     * Gets the systems default zoneId and displays it on the current form.
+     */
     public void getZoneID() {
         ZoneId zoneId = ZoneId.systemDefault();
         displayRegionText.setText(String.valueOf(zoneId));
     }
 
-    @FXML
-    private Button addAppointmentButton;
+    //--------------------Appointment TableView-----------------------------
 
     @FXML
-    private TableView<Appointment> appointmentTableView; //Appointment
+    private TableView<Appointment> appointmentTableView;
 
+    /**
+     * Appointment contact column
+     */
     @FXML
     private TableColumn<Appointment,String> appointmentContactColumn;
 
+    /**
+     * Appointment description column
+     */
     @FXML
     private TableColumn<Appointment,String> appointmentDescriptionColumn;
 
+    /**
+     * Appointment endDateTime column
+     */
     @FXML
     private TableColumn<Appointment,String> appointmentEndDateTimeColumn;
 
+    /**
+     * Appointment ID column
+     */
     @FXML
     private TableColumn<Appointment,Integer> appointmentIDColumn;
 
+    /**
+     * Appointment location column
+     */
     @FXML
     private TableColumn<Appointment,String> appointmentLocationColumn;
 
+    /**
+     * Appointment startDateTime column
+     */
     @FXML
     private TableColumn<Appointment,String> appointmentStartDateTimeColumn;
 
+    /**
+     * Appointment title column
+     */
     @FXML
     private TableColumn<Appointment,String> appointmentTitleColumn;
 
+    /**
+     * Appointment type column
+     */
     @FXML
     private TableColumn<Appointment,String> appointmentTypeColumn;
 
+    /**
+     * Appointment userID column
+     */
     @FXML
     private TableColumn<Appointment,Integer> appointmentUserID;
 
+    /**
+     * Appointment customerID column
+     */
     @FXML
-    private TableColumn<Appointment,Integer> appointmentCustomerIDColumn; //Maybe change to Customer type?
+    private TableColumn<Appointment,Integer> appointmentCustomerIDColumn;
 
-    @FXML
-    private Text regionText;
-
+    /**
+     * Text that is changed to whatever the zoneId is.
+     */
     @FXML
     private Text displayRegionText;
 
+    /**
+     * Buttons / Information Text
+     */
     @FXML
     private Button backButton;
 
@@ -81,6 +121,18 @@ public class AppointmentsFormController implements Initializable {
     private Button modifyAppointmentButton;
 
     @FXML
+    private Button addAppointmentButton;
+
+    @FXML
+    private Text regionText;
+
+    /**
+     * Returns the user to the 'MainMenuForm.fxml' menu
+     *
+     * @param event
+     * @throws IOException
+     */
+    @FXML
     void onActionBackMainMenu(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/fxml/MainMenuForm.fxml"));
@@ -89,6 +141,12 @@ public class AppointmentsFormController implements Initializable {
 
     }
 
+    /**
+     * Brings the user to the 'AddAppointmentForm.fxml' menu
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionAddAppointment(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -97,6 +155,15 @@ public class AppointmentsFormController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Gets the users selected Appointment that's to be modified and carries over the information
+     *     to the 'ModifyAppointmentForm.fxml' menu where it will auto-populate the TextFields/ComboBox.
+     *     If there is no selected Appointment, an alert will show.
+     *
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void onActionModifyAppointment(ActionEvent event) throws IOException, SQLException {
 
@@ -126,6 +193,12 @@ public class AppointmentsFormController implements Initializable {
         }
     }
 
+    /**
+     * Deletes a selected Appointment upon confirming that you want to do so.
+     *
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     void onActionDeleteAppointment(ActionEvent event) throws SQLException {
 
@@ -168,6 +241,12 @@ public class AppointmentsFormController implements Initializable {
         }
     }
 
+    /**
+     * RadioButton that shows all Appointments.
+     *
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     void onActionAllAppointmentsRadioButton(ActionEvent event) throws SQLException {
 
@@ -175,6 +254,12 @@ public class AppointmentsFormController implements Initializable {
 
     }
 
+    /**
+     * RadioButton that shows/filters all Appointments in the current month
+     *
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     void onActionAppointmentMonthRadioButton(ActionEvent event) throws SQLException {
 
@@ -182,6 +267,12 @@ public class AppointmentsFormController implements Initializable {
 
     }
 
+    /**
+     * RadioButton that shows/filters all Appointments in the current week.
+     *
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     void onActionAppointmentWeekRadioButton(ActionEvent event) throws SQLException {
 
@@ -190,6 +281,13 @@ public class AppointmentsFormController implements Initializable {
     }
 
 
+    /**
+     * Setup for the appointmentTableView and populates the appointmentTableView with all appointments in the database.
+     *     Also fetches the zoneId to display it to the user on the current form.
+     *
+     * @param url
+     * @param rb
+     */
     public void initialize(URL url, ResourceBundle rb) {
 
         try {

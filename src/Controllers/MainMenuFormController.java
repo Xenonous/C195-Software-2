@@ -1,8 +1,5 @@
 package Controllers;
 import C195.JDBC;
-import DataAccess.AppointmentDataAccess;
-import DataAccess.CustomerDataAccess;
-import UML.Customer;
 import java.time.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,12 +17,16 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * FXML Controller class
+ *
+ * @author Dylan Franklin
+ */
 public class MainMenuFormController implements Initializable {
     Stage stage;
     Parent scene;
@@ -33,6 +34,18 @@ public class MainMenuFormController implements Initializable {
     private static DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static ZoneId localZoneID = ZoneId.systemDefault();
     private static ZoneId utcZoneID = ZoneId.of("UTC");
+
+    /**
+     * Information Text / Buttons
+     */
+    @FXML
+    private Text loginSuccessfulText;
+
+    @FXML
+    private Text mainMenuText;
+
+    @FXML
+    private Text welcomeText;
 
     @FXML
     private Button CustomerAppointmentsButton;
@@ -50,17 +63,14 @@ public class MainMenuFormController implements Initializable {
     private Button logoutButton;
 
     @FXML
-    private Text loginSuccessfulText;
-
-    @FXML
-    private Text mainMenuText;
-
-    @FXML
     private Button testButton3;
 
-    @FXML
-    private Text welcomeText;
-
+    /**
+     * Brings the user to the 'AppointmentsForm.fxml' menu.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionCustomerAppointments(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -69,6 +79,12 @@ public class MainMenuFormController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Brings the user to the 'CustomersRecordsForm.fxml' menu
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionCustomerRecords(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -77,6 +93,12 @@ public class MainMenuFormController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Brings the user to the 'ReportsForm.fxml' menu
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionReports(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -85,6 +107,12 @@ public class MainMenuFormController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Brings the user to the 'LoginForm.fxml' menu
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionLogout(ActionEvent event) throws IOException {
 
@@ -104,6 +132,11 @@ public class MainMenuFormController implements Initializable {
 
     }
 
+    /**
+     * Closes the application entirely.
+     *
+     * @param event
+     */
     @FXML
     void onActionExit(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -120,6 +153,14 @@ public class MainMenuFormController implements Initializable {
 
     }
 
+    /**
+     * Urgent Appointment reminder. Grabs the users LocalTime and compares it with the database appointment start/end times.
+     *     Displays an alert if there is an appointment within 15min of the users LocalTime.
+     *     Also displays an alert if there is no appointment within 15min.
+     *
+     * @param url
+     * @param rb
+     */
     public void initialize(URL url, ResourceBundle rb) {
 
 

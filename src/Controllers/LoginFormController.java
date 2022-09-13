@@ -23,12 +23,23 @@ import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-
+/**
+ * FXML Controller class
+ *
+ * @author Dylan Franklin
+ */
 public class LoginFormController implements Initializable {
 
     Stage stage;
     Parent scene;
 
+    /**
+     * Method that tracks user login attempts under the file name 'login_activity.txt'.
+     *     Records the date and time of the attempted login and whether it was successful or not.
+     *
+     * @param isSuccessful
+     * @throws IOException
+     */
     private void trackUserLoginActivity(boolean isSuccessful) throws IOException {
 
         LocalTime time = LocalTime.now();
@@ -56,6 +67,12 @@ public class LoginFormController implements Initializable {
 
     }
 
+    /**
+     * Login error messages that depending on the language setting, will be displayed in either English or French.
+     *
+     * @param lang
+     * @throws IOException
+     */
     public void LoginErrorMessages(String lang) throws IOException {
 
         if (lang.equals("français")) {
@@ -75,6 +92,11 @@ public class LoginFormController implements Initializable {
 
     }
 
+    /**
+     * Method that gets the systems default location and language.
+     *
+     * @return
+     */
     public String getLocale(){
         Locale locale = Locale.getDefault();
         String lang = locale.getDisplayLanguage();
@@ -83,6 +105,9 @@ public class LoginFormController implements Initializable {
         return (lang);
     }
 
+    /**
+     * Method that gets the systems default zoneId. Used to changed displayRegionText to show the users zoneId.
+     */
     public void getZoneID() {
         ZoneId zoneId = ZoneId.systemDefault();
         System.out.println("ZoneId: " + zoneId);
@@ -90,6 +115,11 @@ public class LoginFormController implements Initializable {
 
     }
 
+    /**
+     * getLocale() is done first to get 'lang'. This method translates the Login form to French if needed.
+     *
+     * @param lang
+     */
     public void EnglishToFrench(String lang) {
 
         if(lang.equals("français")) {
@@ -113,6 +143,24 @@ public class LoginFormController implements Initializable {
     }
 
 
+    /**
+     * Information text /  Buttons
+     */
+    @FXML
+    private Text regionText;
+
+    @FXML
+    private Text displayRegionText;
+
+    @FXML
+    private Text loginText;
+
+    @FXML
+    private Text usernameText;
+
+    @FXML
+    private Text passwordText;
+
     @FXML
     private Button loginButton;
 
@@ -123,32 +171,28 @@ public class LoginFormController implements Initializable {
     private Separator loginSeparator;
 
     @FXML
-    private Text loginText;
-
-    @FXML
     private ImageView passwordIcon;
-
-    @FXML
-    private Text passwordText;
-
-    @FXML
-    private PasswordField passwordTextField;
 
     @FXML
     private ImageView usernameIcon;
 
+    /**
+     * TextField for password
+     */
     @FXML
-    private Text usernameText;
+    private PasswordField passwordTextField;
 
+    /**
+     * TextField for username
+     */
     @FXML
     private TextField usernameTextField;
 
-    @FXML
-    private Text regionText;
-
-    @FXML
-    private Text displayRegionText;
-
+    /**
+     * Resets the 'usernameTextField' and 'passwordTextField' back to empty inputs.
+     *
+     * @param event
+     */
     @FXML
     void onActionReset(ActionEvent event) {
 
@@ -157,6 +201,15 @@ public class LoginFormController implements Initializable {
 
     }
 
+    /**
+     * Takes username and password inputs and checks the database to see if they're valid or not. If they're valid the
+     *     user will be able to continue to the 'MainMenuForm.fxml' form. If they're not an alert will show. Login activity
+     *     is also tracked for every attempt at logging in whether successful or not.
+     *
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void onActionLogin(ActionEvent event) throws IOException, SQLException {
         String username = usernameTextField.getText();
@@ -198,6 +251,12 @@ public class LoginFormController implements Initializable {
             }
     }
 
+    /**
+     * Checks language and zoneId to see whether translation is needed.
+     *
+     * @param url
+     * @param rb
+     */
     public void initialize(URL url, ResourceBundle rb) {
         getZoneID();
         EnglishToFrench(getLocale());

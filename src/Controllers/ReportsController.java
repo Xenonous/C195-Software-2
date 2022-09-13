@@ -6,8 +6,6 @@ import DataAccess.CustomerDataAccess;
 import UML.Appointment;
 import UML.Contacts;
 import UML.Customer;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,12 +20,15 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
+/**
+ * FXML Controller class
+ *
+ * @author Dylan Franklin
+ */
 public class ReportsController implements Initializable {
 
     Stage stage;
@@ -37,45 +38,89 @@ public class ReportsController implements Initializable {
     private static ZoneId localZoneID = ZoneId.systemDefault();
     private static ZoneId utcZoneID = ZoneId.of("UTC");
 
+    //--------------------Appointment TableView-----------------------------
+
     @FXML
     private TableView<Appointment> appointmentTableViewReport;
 
+    /**
+     * Appointment contact column
+     */
     @FXML
     private TableColumn<Appointment, String> appointmentContactColumn;
 
+    /**
+     * Appointment ID column
+     */
     @FXML
     private TableColumn<Appointment, Integer> appointmentCustomerIDColumn;
 
+    /**
+     * Appointment customerID column
+     */
     @FXML
     private TableColumn<Appointment, String> appointmentDescriptionColumn;
 
+    /**
+     * Appointment endDateTime column
+     */
     @FXML
     private TableColumn<Appointment, String> appointmentEndDateTimeColumn;
 
+    /**
+     * Appointment ID column
+     */
     @FXML
     private TableColumn<Appointment, Integer> appointmentIDColumn;
 
+    /**
+     * Appointment startDateTime column
+     */
     @FXML
     private TableColumn<Appointment, String> appointmentStartDateTimeColumn;
 
+    /**
+     * Appointment title column
+     */
     @FXML
     private TableColumn<Appointment, String> appointmentTitleColumn;
 
+    /**
+     * Appointment type column
+     */
     @FXML
     private TableColumn<Appointment, String> appointmentTypeColumn;
 
+    /**
+     * TextField used to collect month
+     */
     @FXML
     private TextField appointmentsMonthTextField;
 
+    /**
+     * TextField used to collect type
+     */
     @FXML
     private TextField appointmentsTypeTextField;
 
+    /**
+     * ComboBox used to collect contact
+     */
     @FXML
     private ComboBox<Contacts> contactComboBox;
 
+    /**
+     * ComboBox used to collect customer
+     */
     @FXML
     private ComboBox<Customer> customerComboBox;
 
+    /**
+     * Returns the user to the 'MainMenuForm.fxml' form.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionBackMainMenu(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -84,6 +129,12 @@ public class ReportsController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Button used to search for appointments by type and populate appointmentTableView with the results.
+     *
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     void onActionSearchType(ActionEvent event) throws SQLException {
 
@@ -121,6 +172,12 @@ public class ReportsController implements Initializable {
         }
     }
 
+    /**
+     * Button used to search for appointments by month and populate appointmentTableView with the results.
+     *
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     void onActionSearchMonth(ActionEvent event) throws SQLException {
 
@@ -158,21 +215,29 @@ public class ReportsController implements Initializable {
                 alert.showAndWait();
             }
         }
-
     }
 
+    /**
+     * Button used to search for appointments by contact and populate appointmentTableView with the results.
+     *
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     void onActionSearchContact(ActionEvent event) throws SQLException {
-
 
         Contacts selectedContact = contactComboBox.getSelectionModel().getSelectedItem();
         int contactID = AppointmentDataAccess.getContactID(String.valueOf(selectedContact));
         appointmentTableViewReport.setItems(AppointmentDataAccess.getAllAppointmentsContact(contactID));
 
-
-
     }
 
+    /**
+     * Button used to search for appointments by Customer and populate appointmentTableView with the results.
+     *
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     void onActionSearchCustomer(ActionEvent event) throws SQLException {
 
@@ -181,7 +246,13 @@ public class ReportsController implements Initializable {
 
     }
 
-
+    /**
+     * Setup for the appointmentTableView and populates the appointmentTableView with all appointments in the database.
+     *     Also populates the ComboBoxes
+     *
+     * @param url
+     * @param rb
+     */
     public void initialize(URL url, ResourceBundle rb) {
 
         try {

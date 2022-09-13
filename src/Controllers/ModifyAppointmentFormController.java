@@ -27,6 +27,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * FXML Controller class
+ *
+ * @author Dylan Franklin
+ */
 public class ModifyAppointmentFormController implements Initializable {
     Stage stage;
     Parent scene;
@@ -37,6 +42,10 @@ public class ModifyAppointmentFormController implements Initializable {
     private static final ZoneId utcZoneID = ZoneId.of("UTC");
     private static final ZoneId estZoneID = ZoneId.of("US/Eastern");
 
+    /**
+     * Takes the input HH:mm:ss and translates it to HH:mm so it can be displayed correctly in the TextField it's being
+     *     auto-populated in.
+     */
     private void timeFormat() {
         //DATE
         String formattedStartDate = startTimeTextField.getText().substring(0,10);
@@ -52,6 +61,14 @@ public class ModifyAppointmentFormController implements Initializable {
 
     }
 
+    /**
+     * Checks to see if any attempted created appointment is overlapping an already existing appointment. 'isOverlapping' is
+     *      a boolean that's used as the return statement.
+     *
+     * @param selectedCustomerID
+     * @return
+     * @throws SQLException
+     */
     private boolean isOverlapping(int selectedCustomerID) throws SQLException {
 
 
@@ -95,10 +112,25 @@ public class ModifyAppointmentFormController implements Initializable {
         return isOverlapping;
     }
 
+    /**
+     * Method used to compare three LocalTime values. Used to determine if the candidate (user input value), is between the start (8AM) and end (10PM) values.
+     *
+     * @param candidate
+     * @param start
+     * @param end
+     * @return
+     */
     public static boolean isBetween(LocalTime candidate, LocalTime start, LocalTime end) {
         return !candidate.isBefore(start) && !candidate.isAfter(end);
     }
 
+    /**
+     * Gets the users requested appointment local start/end times and translates them to eastern time (EST).
+     *     The business operates on EST, so the conversion is needed. Once all the information is gathered, it is sent
+     *     to the "isBetween" method for further evaluation.
+     *
+     * @return
+     */
     private boolean isBusinessHours() {
 
         String localAppointmentStartDateTime = startDateTimePicker.getValue() + " " + startTimeTextField.getText();
@@ -135,6 +167,9 @@ public class ModifyAppointmentFormController implements Initializable {
         }
     }
 
+    /**
+     * Information Text
+     */
     @FXML
     private Text addAppointmentText;
 
@@ -148,9 +183,6 @@ public class ModifyAppointmentFormController implements Initializable {
     private Text descriptionText;
 
     @FXML
-    private TextField descriptionTextField;
-
-    @FXML
     private Text endDateText;
 
     @FXML
@@ -160,13 +192,7 @@ public class ModifyAppointmentFormController implements Initializable {
     private Text idText;
 
     @FXML
-    private TextField idTextField;
-
-    @FXML
     private Text locationText;
-
-    @FXML
-    private TextField locationTextField;
 
     @FXML
     private Text startDateText;
@@ -178,38 +204,89 @@ public class ModifyAppointmentFormController implements Initializable {
     private Text titleText;
 
     @FXML
-    private TextField titleTextField;
-
-    @FXML
     private Text typeText;
-
-    @FXML
-    private TextField typeTextField;
 
     @FXML
     private Text userIDText;
 
+    /**
+     * TextField used to collect the Appointment ID
+     */
     @FXML
-    private ComboBox<Users> userIDComboBox;
+    private TextField idTextField;
 
+    /**
+     * TextField used to collect the Appointment location
+     */
     @FXML
-    private ComboBox<Contacts> contactComboBox;
+    private TextField locationTextField;
 
+    /**
+     * TextField used to collect the Appointment title
+     */
     @FXML
-    private ComboBox<Customer> customerIDComboBox;
+    private TextField titleTextField;
 
+    /**
+     * TextField used to collect the Appointment type
+     */
+    @FXML
+    private TextField typeTextField;
+
+    /**
+     * TextField used to collect the Appointment description
+     */
+    @FXML
+    private TextField descriptionTextField;
+
+    /**
+     * DatePicker used to collect the Appointment start date
+     */
     @FXML
     private DatePicker startDateTimePicker;
 
+    /**
+     * TextField used to collect the Appointment start time
+     */
     @FXML
     private TextField startTimeTextField;
 
+    /**
+     * DatePicker used to collect the Appointment end date
+     */
     @FXML
     private DatePicker endDateTimePicker;
 
+    /**
+     * TextField used to collect the Appointment end time
+     */
     @FXML
     private TextField endTimeTextField;
 
+    /**
+     * ComboBox used to collect the userID
+     */
+    @FXML
+    private ComboBox<Users> userIDComboBox;
+
+    /**
+     * ComboBox used to collect the contactName
+     */
+    @FXML
+    private ComboBox<Contacts> contactComboBox;
+
+    /**
+     * ComboBox used to collect the customerID
+     */
+    @FXML
+    private ComboBox<Customer> customerIDComboBox;
+
+    /**
+     * Populates the TextFields/ComboBox with values given from the Appointment form.
+     *
+     * @param selectedAppointment
+     * @throws SQLException
+     */
     public void sendAppointment(Appointment selectedAppointment) throws SQLException {
         idTextField.setText(String.valueOf(selectedAppointment.getAppointmentID()));
         titleTextField.setText(String.valueOf(selectedAppointment.getAppointmentTitle()));
@@ -221,6 +298,12 @@ public class ModifyAppointmentFormController implements Initializable {
         timeFormat();
     }
 
+    /**
+     * Returns the user to the 'AppointmentsForm.fxml' menu
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionBackAppointmentsForm(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -229,6 +312,15 @@ public class ModifyAppointmentFormController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Logic checks to see if all TextFields are filled, ensures there's no overlapping appointments, and makes sure the requested appointment is within business hours.
+     *     If there's an error regarding any of these, an alert will show telling the user what the error is. If all information is entered correctly,
+     *     the appointment is translated to UTC and updated in the database and the user is sent back to the 'AppointmentsForm.fxml' menu.
+     *
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void onActionModifyAppointment(ActionEvent event) throws SQLException, IOException {
 
@@ -324,6 +416,12 @@ public class ModifyAppointmentFormController implements Initializable {
         }
     }
 
+    /**
+     * ComboBox setups.
+     *
+     * @param url
+     * @param rb
+     */
     public void initialize(URL url, ResourceBundle rb) {
         try {
             contactComboBox.setPromptText("Select Contact");
