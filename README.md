@@ -7,6 +7,7 @@ WGU C195 Software 2 PA - JavaFX Appointment Scheduler.
 Purpose: The purpose of this JavaFX application is to manage appointments via addition, modification, and deletion for Customers. Customers can also be
              Added, Modifed, and deleted. Because of the nature of appointments, the company, and the database used, timezone consideration
              was used in the application as well.  
+
 ---
 
 Author: Dylan Franklin
