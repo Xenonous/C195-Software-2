@@ -91,7 +91,7 @@ public class AddCustomerRecordFormController implements Initializable {
     private ComboBox<Countries> countryComboBox;
 
     /**
-     * ComboBox used to collect the Customer First-Level Division. Pre-populates based on what the user selects in the country combobox.
+     * ComboBox used to collect the Customer First-Level Division. Pre-populates based on what the user selects in the country ComboBox.
      */
     @FXML
     private ComboBox<FirstLevelDivisions> firstlevelDivisionComboBox;
@@ -110,6 +110,7 @@ public class AddCustomerRecordFormController implements Initializable {
         stage.show();
     }
 
+
     /**
      * Checks for an input from the 'countryComboBox' and uses that to populate the 'firstlevelDivisionsComboBox'.
      *     If input is missing, an alert is shown.
@@ -117,6 +118,7 @@ public class AddCustomerRecordFormController implements Initializable {
      * @param mouseEvent
      * @throws SQLException
      */
+
     @FXML
     public void onActionDisplayFirstLevelDivisions(javafx.scene.input.MouseEvent mouseEvent) throws SQLException {
         // System.out.println("Divisions has been clicked.");
@@ -207,8 +209,8 @@ public class AddCustomerRecordFormController implements Initializable {
             countryComboBox.setItems(CustomerDataAccess.getAllCountries());
         }
 
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
+        catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
     }
 

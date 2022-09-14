@@ -20,10 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -142,12 +139,7 @@ public class AddAppointmentFormController implements Initializable {
         // System.out.println(isBetween(endTime, LocalTime.of(8, 0), LocalTime.of(22, 0)));
 
 
-        if(isBetween(startTime, LocalTime.of(8, 0), LocalTime.of(22, 0)) && isBetween(endTime, LocalTime.of(8, 0), LocalTime.of(22, 0))) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return isBetween(startTime, LocalTime.of(8, 0), LocalTime.of(22, 0)) && isBetween(endTime, LocalTime.of(8, 0), LocalTime.of(22, 0));
     }
 
 
@@ -294,7 +286,7 @@ public class AddAppointmentFormController implements Initializable {
         int selectedCustomerID = Integer.parseInt(String.valueOf(customerIDComboBox.getSelectionModel().getSelectedItem()));
 
 
-        if (isOverlapping(selectedCustomerID) == true) {
+        if (isOverlapping(selectedCustomerID)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("OVERLAPPING APPOINTMENTS");
@@ -311,7 +303,7 @@ public class AddAppointmentFormController implements Initializable {
             alert.showAndWait();
         }
 
-        else if (isBusinessHours() == false) {
+        else if (!isBusinessHours()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("APPOINTMENT OUTSIDE BUSINESS HOURS");
@@ -392,7 +384,7 @@ public class AddAppointmentFormController implements Initializable {
 
     /**
      * ComboBox setups.
-     *
+     * LAMBDA EXPRESSION #3. Keeps the user from selecting past dates for scheduling appointment start/end times.
      * @param url
      * @param rb
      */
@@ -404,10 +396,33 @@ public class AddAppointmentFormController implements Initializable {
             customerIDComboBox.setItems(CustomerDataAccess.getAllCustomers());
             userIDComboBox.setPromptText(("Select UserID"));
             userIDComboBox.setItems(AppointmentDataAccess.getAllUsers());
+
+            //Lambda for startDateTimePicker
+            startDateTimePicker.setDayCellFactory(picker -> new DateCell() {
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+                    LocalDate currentDate = LocalDate.now();
+
+                    setDisable(empty || date.compareTo(currentDate) < 0 );
+
+                }
+            });
+
+            //Lambda for endDateTimePicker
+            endDateTimePicker.setDayCellFactory(picker -> new DateCell() {
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+                    LocalDate currentDate = LocalDate.now();
+
+                    setDisable(empty || date.compareTo(currentDate) < 0 );
+
+                }
+            });
+
         }
 
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
+        catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
     }
 }

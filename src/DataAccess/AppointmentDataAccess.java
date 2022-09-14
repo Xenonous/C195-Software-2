@@ -19,26 +19,26 @@ import java.util.Locale;
  */
 public class AppointmentDataAccess {
 
-    private static DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private static ZoneId localZoneID = ZoneId.systemDefault();
-    private static ZoneId utcZoneID = ZoneId.of("UTC");
+    private static final DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final ZoneId localZoneID = ZoneId.systemDefault();
+    private static final ZoneId utcZoneID = ZoneId.of("UTC");
 
     private static int appointmentID = 0;
 
     /**
      * An ObservableList of all Appointments fetched.
      */
-    private static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+    private static final ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
     /**
      * An ObservableList of all Appointment contacts fetched.
      */
-    private static ObservableList<Appointment> allAppointmentsContact = FXCollections.observableArrayList();
+    private static final ObservableList<Appointment> allAppointmentsContact = FXCollections.observableArrayList();
 
     /**
      * An ObservableList of all Users fetched.
      */
-    private static ObservableList<Users> allUsers = FXCollections.observableArrayList();
+    private static final ObservableList<Users> allUsers = FXCollections.observableArrayList();
 
     /**
      * Starting ID for Appointment.

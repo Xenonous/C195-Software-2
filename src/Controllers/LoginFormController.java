@@ -33,6 +33,7 @@ public class LoginFormController implements Initializable {
     Stage stage;
     Parent scene;
 
+
     /**
      * Method that tracks user login attempts under the file name 'login_activity.txt'.
      *     Records the date and time of the attempted login and whether it was successful or not.
@@ -196,8 +197,8 @@ public class LoginFormController implements Initializable {
     @FXML
     void onActionReset(ActionEvent event) {
 
-        usernameTextField.setText("");
-        passwordTextField.setText("");
+        // usernameTextField.setText("");
+        // passwordTextField.setText("");
 
     }
 
@@ -253,11 +254,18 @@ public class LoginFormController implements Initializable {
 
     /**
      * Checks language and zoneId to see whether translation is needed.
+     * LAMBDA #1. OnClick of the resetButton, the username and password TextFields will be cleaned.
      *
      * @param url
      * @param rb
      */
     public void initialize(URL url, ResourceBundle rb) {
+
+        resetButton.setOnAction((event) -> {
+            passwordTextField.setText("");
+            usernameTextField.setText("");
+        });
+
         getZoneID();
         EnglishToFrench(getLocale());
 

@@ -34,9 +34,9 @@ public class ReportsController implements Initializable {
     Stage stage;
     Parent scene;
 
-    private static DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private static ZoneId localZoneID = ZoneId.systemDefault();
-    private static ZoneId utcZoneID = ZoneId.of("UTC");
+    private static final DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final ZoneId localZoneID = ZoneId.systemDefault();
+    private static final ZoneId utcZoneID = ZoneId.of("UTC");
 
     //--------------------Appointment TableView-----------------------------
 
@@ -263,8 +263,8 @@ public class ReportsController implements Initializable {
             customerComboBox.setItems(CustomerDataAccess.getAllCustomers());
         }
 
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
+        catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
 
         appointmentIDColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));

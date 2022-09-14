@@ -9,7 +9,7 @@ import javafx.collections.ObservableList;
  */
 public class Appointment {
 
-    private ObservableList<Customer> associatedCustomer = FXCollections.observableArrayList();
+    private final ObservableList<Customer> associatedCustomer = FXCollections.observableArrayList();
     private int appointmentID;
     private String appointmentTitle;
     private String appointmentDescription;

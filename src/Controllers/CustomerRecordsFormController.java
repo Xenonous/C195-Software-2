@@ -207,7 +207,7 @@ public class CustomerRecordsFormController implements Initializable {
 
                 Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
 
-                if(foreignKeyCheck(selectedCustomer.getCustomerID()) == true) {
+                if(foreignKeyCheck(selectedCustomer.getCustomerID())) {
                     String SQL = "DELETE CUSTOMERS FROM CUSTOMERS WHERE Customer_ID = " + selectedCustomer.getCustomerID();
                     PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
                     ps.execute();
@@ -248,8 +248,8 @@ public class CustomerRecordsFormController implements Initializable {
                 customerTableView.setItems(getAllCustomers());
         }
 
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
+        catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
 
         customerIDColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));

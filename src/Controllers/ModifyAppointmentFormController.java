@@ -159,12 +159,7 @@ public class ModifyAppointmentFormController implements Initializable {
         // System.out.println(isBetween(endTime, LocalTime.of(8, 0), LocalTime.of(22, 0)));
 
 
-        if(isBetween(startTime, LocalTime.of(8, 0), LocalTime.of(22, 0)) && isBetween(endTime, LocalTime.of(8, 0), LocalTime.of(22, 0))) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return isBetween(startTime, LocalTime.of(8, 0), LocalTime.of(22, 0)) && isBetween(endTime, LocalTime.of(8, 0), LocalTime.of(22, 0));
     }
 
     /**
@@ -285,9 +280,8 @@ public class ModifyAppointmentFormController implements Initializable {
      * Populates the TextFields/ComboBox with values given from the Appointment form.
      *
      * @param selectedAppointment
-     * @throws SQLException
      */
-    public void sendAppointment(Appointment selectedAppointment) throws SQLException {
+    public void sendAppointment(Appointment selectedAppointment) {
         idTextField.setText(String.valueOf(selectedAppointment.getAppointmentID()));
         titleTextField.setText(String.valueOf(selectedAppointment.getAppointmentTitle()));
         descriptionTextField.setText(String.valueOf(selectedAppointment.getAppointmentDescription()));
@@ -295,6 +289,10 @@ public class ModifyAppointmentFormController implements Initializable {
         typeTextField.setText((String.valueOf(selectedAppointment.getAppointmentType())));
         startTimeTextField.setText(String.valueOf(selectedAppointment.getAppointmentStartDateTime())); // DATE AND TIME?
         endTimeTextField.setText((String.valueOf(selectedAppointment.getAppointmentEndDateTime())));
+        contactComboBox.getSelectionModel().select(selectedAppointment.getContactID());
+        customerIDComboBox.getSelectionModel().select(selectedAppointment.getContactID());
+        userIDComboBox.getSelectionModel().select(selectedAppointment.getUserID());
+
         timeFormat();
     }
 
@@ -327,7 +325,7 @@ public class ModifyAppointmentFormController implements Initializable {
         int selectedCustomerID = Integer.parseInt(String.valueOf(customerIDComboBox.getSelectionModel().getSelectedItem()));
 
 
-        if (isOverlapping(selectedCustomerID) == true) {
+        if (isOverlapping(selectedCustomerID)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("OVERLAPPING APPOINTMENTS");
@@ -343,7 +341,7 @@ public class ModifyAppointmentFormController implements Initializable {
             alert.showAndWait();
         }
 
-        else if (isBusinessHours() == false) {
+        else if (!isBusinessHours()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("APPOINTMENT OUTSIDE BUSINESS HOURS");
@@ -418,6 +416,7 @@ public class ModifyAppointmentFormController implements Initializable {
 
     /**
      * ComboBox setups.
+     * LAMBDA EXPRESSION #2. Keeps the user from selecting past dates for modifying appointment start/end times.
      *
      * @param url
      * @param rb
@@ -430,6 +429,28 @@ public class ModifyAppointmentFormController implements Initializable {
             customerIDComboBox.setItems(CustomerDataAccess.getAllCustomers());
             userIDComboBox.setPromptText(("Select UserID"));
             userIDComboBox.setItems(AppointmentDataAccess.getAllUsers());
+
+            //Lambda for startDateTimePicker
+            startDateTimePicker.setDayCellFactory(picker -> new DateCell() {
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+                    LocalDate currentDate = LocalDate.now();
+
+                    setDisable(empty || date.compareTo(currentDate) < 0 );
+
+                }
+            });
+
+            //Lambda for endDateTimePicker
+            endDateTimePicker.setDayCellFactory(picker -> new DateCell() {
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+                    LocalDate currentDate = LocalDate.now();
+
+                    setDisable(empty || date.compareTo(currentDate) < 0 );
+
+                }
+            });
         }
 
         catch (SQLException throwables) {

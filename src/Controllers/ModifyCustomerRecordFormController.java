@@ -203,20 +203,18 @@ public class ModifyCustomerRecordFormController implements Initializable {
     }
 
     /**
-     * Populates the TextFields/ComboBox with values given from the Customer form.
+     * Populates the TextFields with values given from the Customer form.
      *
      * @param selectedCustomer
      * @throws SQLException
      */
     public void sendCustomer(Customer selectedCustomer) throws SQLException {
 
-
         IDTextField.setText(String.valueOf(selectedCustomer.getCustomerID()));
         nameTextField.setText(String.valueOf(selectedCustomer.getCustomerName()));
         addressTextField.setText(String.valueOf(selectedCustomer.getCustomerAddress()));
         postalNumberTextField.setText(String.valueOf(selectedCustomer.getCustomerPostalCode()));
         phoneNumberTextField.setText(String.valueOf(selectedCustomer.getCustomerPhoneNumber()));
-        // Country and First-Level ComboBox?
     }
 
     /**
@@ -234,8 +232,8 @@ public class ModifyCustomerRecordFormController implements Initializable {
             countryComboBox.setItems(CustomerDataAccess.getAllCountries());
         }
 
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
+        catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
     }
 

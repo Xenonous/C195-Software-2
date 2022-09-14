@@ -31,9 +31,9 @@ public class MainMenuFormController implements Initializable {
     Stage stage;
     Parent scene;
 
-    private static DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private static ZoneId localZoneID = ZoneId.systemDefault();
-    private static ZoneId utcZoneID = ZoneId.of("UTC");
+    final private static DateTimeFormatter datetimeDTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    final private static ZoneId localZoneID = ZoneId.systemDefault();
+    final private static ZoneId utcZoneID = ZoneId.of("UTC");
 
     /**
      * Information Text / Buttons
@@ -139,6 +139,7 @@ public class MainMenuFormController implements Initializable {
      */
     @FXML
     void onActionExit(ActionEvent event) {
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("WARNING");
         alert.setHeaderText("Exit Confirmation");
@@ -150,7 +151,6 @@ public class MainMenuFormController implements Initializable {
             System.exit(0);
 
         }
-
     }
 
     /**
@@ -211,8 +211,8 @@ public class MainMenuFormController implements Initializable {
             }
         }
 
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
+        catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
     }
 

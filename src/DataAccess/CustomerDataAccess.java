@@ -21,17 +21,17 @@ public class CustomerDataAccess {
     /**
      * ObservableList for all Customers
      */
-    private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
+    private static final ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
 
     /**
      * ObservableList for all countries
      */
-    private static ObservableList<Countries> allCountries = FXCollections.observableArrayList();
+    private static final ObservableList<Countries> allCountries = FXCollections.observableArrayList();
 
     /**
      * ObservableList for all divisions
      */
-    private static ObservableList<FirstLevelDivisions> allDivisions = FXCollections.observableArrayList();
+    private static final ObservableList<FirstLevelDivisions> allDivisions = FXCollections.observableArrayList();
 
     /**
      * Starting ID for Customer
@@ -52,7 +52,9 @@ public class CustomerDataAccess {
      * @throws SQLException
      */
     public static ObservableList<Customer> getAllCustomers() throws SQLException {
-        String SQL = "SELECT * FROM CUSTOMERS";
+
+        String SQL = "SELECT cu.CUSTOMER_ID, cu.CUSTOMER_NAME, cu.ADDRESS, cu.POSTAL_CODE, cu.PHONE, cu.DIVISION_ID, co.COUNTRY FROM customers cu " +
+                "INNER JOIN FIRST_LEVEL_DIVISIONS fld ON cu.DIVISION_ID = fld.DIVISION_ID INNER JOIN COUNTRIES co ON fld.COUNTRY_ID = co.COUNTRY_ID";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
         ResultSet rs = ps.executeQuery();
 
@@ -64,15 +66,15 @@ public class CustomerDataAccess {
             String customerAddress =  rs.getString(3);
             String customerPostalCode = rs.getString(4);
             String customerPhoneNumber = rs.getString(5);
-            String customerFirstLevelDivision = rs.getString(10);
+            String customerFirstLevelDivision = rs.getString(6);
+            String customerCountry = rs.getString(7);
 
 
-            Customer newCustomer =  new Customer(customerID,customerName,customerAddress,customerPostalCode,customerPhoneNumber,null,customerFirstLevelDivision);
+            Customer newCustomer =  new Customer(customerID,customerName,customerAddress,customerPostalCode,customerPhoneNumber,customerCountry,customerFirstLevelDivision);
             allCustomers.add(newCustomer);
 
             // System.out.println(rs.getInt(1) + " " + (rs.getString(2)) + " " + (rs.getString(3)) + " " + (rs.getString(4)) + " " + (rs.getString(5)));
         }
-
 
 
         return allCustomers;

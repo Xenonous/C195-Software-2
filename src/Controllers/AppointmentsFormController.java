@@ -134,6 +134,7 @@ public class AppointmentsFormController implements Initializable {
      */
     @FXML
     void onActionBackMainMenu(ActionEvent event) throws IOException {
+
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/fxml/MainMenuForm.fxml"));
         stage.setScene(new Scene(scene));
@@ -206,7 +207,7 @@ public class AppointmentsFormController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("SELECTION ERROR");
-            alert.setContentText("Please select the Appointent you wish to delete from the table.");
+            alert.setContentText("Please select the Appointment you wish to delete from the table.");
             alert.showAndWait();
         }
 
@@ -294,9 +295,11 @@ public class AppointmentsFormController implements Initializable {
             appointmentTableView.setItems(AppointmentDataAccess.getAllAppointments());
         }
 
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
+        catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
+
+
 
         appointmentIDColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         appointmentTitleColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentTitle"));

@@ -16,8 +16,7 @@ public class Customer {
 
     /**
      * Constructor for Customers
-     *
-     * @param customerID
+     *  @param customerID
      * @param customerName
      * @param customerAddress
      * @param customerPostalCode
