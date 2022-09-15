@@ -289,9 +289,6 @@ public class ModifyAppointmentFormController implements Initializable {
         typeTextField.setText((String.valueOf(selectedAppointment.getAppointmentType())));
         startTimeTextField.setText(String.valueOf(selectedAppointment.getAppointmentStartDateTime())); // DATE AND TIME?
         endTimeTextField.setText((String.valueOf(selectedAppointment.getAppointmentEndDateTime())));
-        contactComboBox.getSelectionModel().select(selectedAppointment.getContactID());
-        customerIDComboBox.getSelectionModel().select(selectedAppointment.getContactID());
-        userIDComboBox.getSelectionModel().select(selectedAppointment.getUserID());
 
         timeFormat();
     }

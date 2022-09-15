@@ -10,15 +10,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane prefHeight="378.0" prefWidth="989.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ReportsController">
    <children>
-      <Text layoutX="25.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reports">
-         <font>
-            <Font size="28.0" />
-         </font>
-      </Text>
-      <Separator layoutY="51.0" prefHeight="6.0" prefWidth="989.0" />
       <TableView fx:id="appointmentTableViewReport" layoutX="231.0" layoutY="71.0" prefHeight="290.0" prefWidth="736.0">
          <columns>
             <TableColumn fx:id="appointmentIDColumn" prefWidth="96.0" text="Appointment ID" />
@@ -31,18 +24,24 @@
             <TableColumn fx:id="appointmentCustomerIDColumn" prefWidth="78.0" text="Customer ID" />
          </columns>
       </TableView>
+      <Separator layoutY="51.0" prefHeight="6.0" prefWidth="989.0" />
       <TextField fx:id="appointmentsTypeTextField" layoutX="28.0" layoutY="98.0" prefHeight="14.0" prefWidth="134.0" />
       <Button layoutX="172.0" layoutY="98.0" mnemonicParsing="false" onAction="#onActionSearchType" prefHeight="25.0" prefWidth="41.0" text="Find" />
       <TextField fx:id="appointmentsMonthTextField" layoutX="28.0" layoutY="160.0" prefHeight="14.0" prefWidth="134.0" promptText="MM" />
       <Button layoutX="172.0" layoutY="160.0" mnemonicParsing="false" onAction="#onActionSearchMonth" prefHeight="25.0" prefWidth="41.0" text="Find" />
-      <Text layoutX="14.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A1. Type Search" />
-      <Button layoutX="14.0" layoutY="340.0" mnemonicParsing="false" onAction="#onActionBackMainMenu" text="Back" />
-      <Text layoutX="14.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A2. Month Search" />
-      <Text layoutX="14.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B1. Contact Search" />
       <ComboBox fx:id="contactComboBox" layoutX="28.0" layoutY="225.0" prefHeight="25.0" prefWidth="134.0" />
       <Button layoutX="172.0" layoutY="225.0" mnemonicParsing="false" onAction="#onActionSearchContact" prefHeight="25.0" prefWidth="41.0" text="Find" />
-      <Text layoutX="13.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C1. Customer Search" />
       <ComboBox fx:id="customerComboBox" layoutX="28.0" layoutY="287.0" prefHeight="25.0" prefWidth="134.0" />
       <Button layoutX="172.0" layoutY="287.0" mnemonicParsing="false" onAction="#onActionSearchCustomer" prefHeight="25.0" prefWidth="41.0" text="Find" />
+      <Button layoutX="14.0" layoutY="340.0" mnemonicParsing="false" onAction="#onActionBackMainMenu" text="Back" />
+      <Text layoutX="25.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reports">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Text>
+      <Text layoutX="14.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A1. Type Search" />
+      <Text layoutX="14.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A2. Month Search" />
+      <Text layoutX="14.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B1. Contact Search" />
+      <Text layoutX="13.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C1. Customer Search" />
    </children>
 </AnchorPane>

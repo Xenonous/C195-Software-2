@@ -150,6 +150,10 @@ public class AppointmentsFormController implements Initializable {
      */
     @FXML
     void onActionAddAppointment(ActionEvent event) throws IOException {
+
+        appointmentTableView.getSortOrder().add(appointmentIDColumn);
+
+
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/fxml/AddAppointmentForm.fxml"));
         stage.setScene(new Scene(scene));
@@ -229,12 +233,14 @@ public class AppointmentsFormController implements Initializable {
 
                 System.out.println("Deletion Successful!");
 
+
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Information");
                 alert.setHeaderText("Appointment Deletion");
                 alert.setContentText("The selected Appointment has been successfully deleted from the database.");
+                alert.showAndWait();
 
-                appointmentTableView.refresh();
+                appointmentTableView.setItems(AppointmentDataAccess.getAllAppointments());
 
 
 
@@ -293,6 +299,7 @@ public class AppointmentsFormController implements Initializable {
 
         try {
             appointmentTableView.setItems(AppointmentDataAccess.getAllAppointments());
+            appointmentTableView.getSortOrder().add(appointmentIDColumn);
         }
 
         catch (SQLException throwable) {

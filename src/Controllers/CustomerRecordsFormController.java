@@ -1,5 +1,6 @@
 package Controllers;
 import C195.JDBC;
+import DataAccess.CustomerDataAccess;
 import UML.Customer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -135,6 +136,9 @@ public class CustomerRecordsFormController implements Initializable {
      */
     @FXML
     void onActionAddCustomer(ActionEvent event) throws IOException {
+
+        customerTableView.getSortOrder().add(customerIDColumn);
+
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/fxml/AddCustomerRecordForm.fxml"));
         stage.setScene(new Scene(scene));
@@ -218,8 +222,9 @@ public class CustomerRecordsFormController implements Initializable {
                     alert.setTitle("Information");
                     alert.setHeaderText("Customer Deletion");
                     alert.setContentText("The selected Customer has been successfully deleted from the database.");
+                    alert.showAndWait();
 
-                    customerTableView.refresh();
+                    customerTableView.setItems(CustomerDataAccess.getAllCustomers());
 
 
 
@@ -245,7 +250,8 @@ public class CustomerRecordsFormController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         try {
-                customerTableView.setItems(getAllCustomers());
+            customerTableView.setItems(CustomerDataAccess.getAllCustomers());
+            customerTableView.getSortOrder().add(customerIDColumn);
         }
 
         catch (SQLException throwable) {
