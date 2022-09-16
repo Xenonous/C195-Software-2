@@ -74,6 +74,7 @@ public class AddAppointmentFormController implements Initializable {
             ZonedDateTime endDT = utcEndDT.atZone(utcZoneID).withZoneSameInstant(localZoneID);
 
 
+            /*  OLD CODE
             if(userStartDT.isAfter(ChronoLocalDateTime.from(startDT)) && userStartDT.isBefore(ChronoLocalDateTime.from(endDT))) {
                 isOverlapping = true;
                 break;
@@ -81,6 +82,18 @@ public class AddAppointmentFormController implements Initializable {
             else if (userEndDT.isAfter(ChronoLocalDateTime.from(startDT)) && userEndDT.isBefore(ChronoLocalDateTime.from(endDT))) {
                 isOverlapping = true;
                 break;
+            }
+            else if (userStartDT.isEqual(ChronoLocalDateTime.from(startDT)) && userEndDT.isEqual(ChronoLocalDateTime.from(endDT))) {
+                isOverlapping = true;
+                break;
+            }
+
+
+             */
+
+            if(isBetweenDateTime(userStartDT,startDT,endDT) || isBetweenDateTime(userEndDT,startDT,endDT)) {
+                System.out.println("The requested timeframe is BETWEEN another appointment.");
+                isOverlapping = true;
             }
 
             else {
@@ -92,6 +105,7 @@ public class AddAppointmentFormController implements Initializable {
         return isOverlapping;
     }
 
+
     /**
      * Method used to compare three LocalTime values. Used to determine if the candidate (user input value), is between the start (8AM) and end (10PM) values.
      *
@@ -100,9 +114,14 @@ public class AddAppointmentFormController implements Initializable {
      * @param end
      * @return
      */
-    public static boolean isBetween(LocalTime candidate, LocalTime start, LocalTime end) {
+    public static boolean isBetweenTime(LocalTime candidate, LocalTime start, LocalTime end) {
         return !candidate.isBefore(start) && !candidate.isAfter(end);
     }
+
+    public static boolean isBetweenDateTime(LocalDateTime candidate, ZonedDateTime start, ZonedDateTime end) {
+        return !candidate.isBefore(ChronoLocalDateTime.from(start)) && !candidate.isAfter(ChronoLocalDateTime.from(end));
+    }
+
 
     /**
      * Gets the users requested appointment local start/end times and translates them to eastern time (EST).
@@ -139,7 +158,7 @@ public class AddAppointmentFormController implements Initializable {
         // System.out.println(isBetween(endTime, LocalTime.of(8, 0), LocalTime.of(22, 0)));
 
 
-        return isBetween(startTime, LocalTime.of(8, 0), LocalTime.of(22, 0)) && isBetween(endTime, LocalTime.of(8, 0), LocalTime.of(22, 0));
+        return isBetweenTime(startTime, LocalTime.of(8, 0), LocalTime.of(22, 0)) && isBetweenTime(endTime, LocalTime.of(8, 0), LocalTime.of(22, 0));
     }
 
 

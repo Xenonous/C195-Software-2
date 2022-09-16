@@ -217,10 +217,13 @@ public class AppointmentsFormController implements Initializable {
 
         else if (!appointmentTableView.getSelectionModel().isEmpty()) {
 
+            int appointmentID = appointmentTableView.getSelectionModel().getSelectedItem().getAppointmentID();
+            String appointmentType = appointmentTableView.getSelectionModel().getSelectedItem().getAppointmentType();
+
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("CONFIRMATION");
             alert.setHeaderText("Appointment Deletion");
-            alert.setContentText("Do you really want to DELETE the selected Appointment from the database?");
+            alert.setContentText("Do you really want to DELETE the selected Appointment from the database? \n APPOINTMENT ID: " + appointmentID + "\n APPOINTMENT TYPE: " + appointmentType);
             Optional<ButtonType> OKButton = alert.showAndWait();
 
             if (OKButton.isPresent() && OKButton.get() == ButtonType.OK) {
@@ -237,7 +240,7 @@ public class AppointmentsFormController implements Initializable {
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Information");
                 alert.setHeaderText("Appointment Deletion");
-                alert.setContentText("The selected Appointment has been successfully deleted from the database.");
+                alert.setContentText("The selected Appointment has been successfully deleted from the database. \n APPOINTMENT ID: " + appointmentID + " \n APPOINTMENT TYPE: " + appointmentType);
                 alert.showAndWait();
 
                 appointmentTableView.setItems(AppointmentDataAccess.getAllAppointments());
