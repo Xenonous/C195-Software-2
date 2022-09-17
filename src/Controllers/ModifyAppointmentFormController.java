@@ -3,9 +3,7 @@ import C195.JDBC;
 import DataAccess.AppointmentDataAccess;
 import DataAccess.CustomerDataAccess;
 import UML.Appointment;
-import UML.Contacts;
 import UML.Customer;
-import UML.Users;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -308,6 +306,7 @@ public class ModifyAppointmentFormController implements Initializable {
         endTimeTextField.setText((String.valueOf(selectedAppointment.getAppointmentEndDateTime())));
         userIDComboBox.setValue(String.valueOf(selectedAppointment.getUserID()));
         contactComboBox.setValue(AppointmentDataAccess.getContactName(selectedAppointment.getContactID()));
+        customerIDComboBox.setValue(CustomerDataAccess.getAllCustomers().get(selectedAppointment.getCustomerID() - 1));
 
         timeFormat();
     }
