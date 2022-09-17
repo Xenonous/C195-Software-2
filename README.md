@@ -14,9 +14,9 @@ Author: Dylan Franklin
 
 Contact Information: dfra145@wgu.edu / epicishness100@gmail.com
 
-Student Application Version: V1.0
+Student Application Version: V2.0
 
-Date: 09/13/2022 (MM/DD/YYYY)
+Date: 09/16/2022 (MM/DD/YYYY)
 
 ---
 
