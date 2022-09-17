@@ -158,7 +158,7 @@ public class AppointmentDataAccess {
      * @return
      * @throws SQLException
      */
-    public static ObservableList<Appointment> getAllAppointmentsCustomer(Customer selectedCustomer) throws SQLException {
+    public static ObservableList<Appointment> getAllAppointmentsCustomer(String selectedCustomer) throws SQLException {
 
         ObservableList<Appointment> allAppointmentsCustomer = FXCollections.observableArrayList();
 
@@ -310,9 +310,9 @@ public class AppointmentDataAccess {
      * @return
      * @throws SQLException
      */
-    public static ObservableList<Contacts> getAllContacts() throws SQLException {
+    public static ObservableList<String> getAllContacts() throws SQLException {
 
-        ObservableList<Contacts> allContacts = FXCollections.observableArrayList();
+        ObservableList<String> allContacts = FXCollections.observableArrayList();
 
         String SQL = "SELECT CONTACT_NAME, CONTACT_ID, EMAIL FROM CONTACTS";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
@@ -322,7 +322,7 @@ public class AppointmentDataAccess {
             String contactName = rs.getString(1);
             // System.out.println(rs.getString(1));
             Contacts contact = new Contacts(contactName);
-            allContacts.add(contact);
+            allContacts.add(String.valueOf(contact));
         }
 
         return allContacts;
@@ -334,9 +334,9 @@ public class AppointmentDataAccess {
      * @return
      * @throws SQLException
      */
-    public static ObservableList<Users> getAllUsers() throws SQLException {
+    public static ObservableList<String> getAllUsers() throws SQLException {
 
-        ObservableList<Users> allUsers = FXCollections.observableArrayList();
+        ObservableList<String> allUsers = FXCollections.observableArrayList();
 
         String SQL = "SELECT * FROM USERS";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
@@ -346,7 +346,7 @@ public class AppointmentDataAccess {
             int userID = rs.getInt(1);
             // System.out.println(rs.getString(1));
             Users users = new Users(userID);
-            allUsers.add(users);
+            allUsers.add(String.valueOf(users));
         }
 
         return allUsers;
@@ -370,6 +370,19 @@ public class AppointmentDataAccess {
         }
 
         return contactID;
+    }
+
+    public static String getContactName (int contactID) throws SQLException {
+
+        String contactName = null;
+        String SQL = "SELECT CONTACT_NAME FROM CONTACTS WHERE CONTACT_ID = " + contactID;
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()) {
+            contactName = rs.getString(1);
+        }
+        return contactName;
     }
 
 }

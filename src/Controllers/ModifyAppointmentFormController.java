@@ -279,13 +279,13 @@ public class ModifyAppointmentFormController implements Initializable {
      * ComboBox used to collect the userID
      */
     @FXML
-    private ComboBox<Users> userIDComboBox;
+    private ComboBox<String> userIDComboBox;
 
     /**
      * ComboBox used to collect the contactName
      */
     @FXML
-    private ComboBox<Contacts> contactComboBox;
+    private ComboBox<String> contactComboBox;
 
     /**
      * ComboBox used to collect the customerID
@@ -298,7 +298,7 @@ public class ModifyAppointmentFormController implements Initializable {
      *
      * @param selectedAppointment
      */
-    public void sendAppointment(Appointment selectedAppointment) {
+    public void sendAppointment(Appointment selectedAppointment) throws SQLException {
         idTextField.setText(String.valueOf(selectedAppointment.getAppointmentID()));
         titleTextField.setText(String.valueOf(selectedAppointment.getAppointmentTitle()));
         descriptionTextField.setText(String.valueOf(selectedAppointment.getAppointmentDescription()));
@@ -306,6 +306,8 @@ public class ModifyAppointmentFormController implements Initializable {
         typeTextField.setText((String.valueOf(selectedAppointment.getAppointmentType())));
         startTimeTextField.setText(String.valueOf(selectedAppointment.getAppointmentStartDateTime())); // DATE AND TIME?
         endTimeTextField.setText((String.valueOf(selectedAppointment.getAppointmentEndDateTime())));
+        userIDComboBox.setValue(String.valueOf(selectedAppointment.getUserID()));
+        contactComboBox.setValue(AppointmentDataAccess.getContactName(selectedAppointment.getContactID()));
 
         timeFormat();
     }

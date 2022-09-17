@@ -98,13 +98,13 @@ public class ModifyCustomerRecordFormController implements Initializable {
      * ComboBox used to collect the Customer country
      */
     @FXML
-    private ComboBox<Countries> countryComboBox;
+    private ComboBox<String> countryComboBox;
 
     /**
      * ComboBox used to collect the Customer first-level division
      */
     @FXML
-    private ComboBox<FirstLevelDivisions> firstlevelDivisionComboBox;
+    private ComboBox<String> firstlevelDivisionComboBox;
 
     /**
      * Returns the user to the 'CustomerRecords.fxml' menu
@@ -215,6 +215,8 @@ public class ModifyCustomerRecordFormController implements Initializable {
         addressTextField.setText(String.valueOf(selectedCustomer.getCustomerAddress()));
         postalNumberTextField.setText(String.valueOf(selectedCustomer.getCustomerPostalCode()));
         phoneNumberTextField.setText(String.valueOf(selectedCustomer.getCustomerPhoneNumber()));
+        countryComboBox.setValue(selectedCustomer.getCustomerCountry());
+        firstlevelDivisionComboBox.setValue(CustomerDataAccess.getFirstLevelDivisionName(Integer.parseInt(selectedCustomer.getCustomerFirstLevelDivision())));
     }
 
     /**

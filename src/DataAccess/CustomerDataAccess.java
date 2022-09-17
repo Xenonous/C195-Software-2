@@ -86,8 +86,8 @@ public class CustomerDataAccess {
      * @return
      * @throws SQLException
      */
-    public static ObservableList<Countries> getAllCountries() throws SQLException {
-        ObservableList<Countries> allCountries = FXCollections.observableArrayList();
+    public static ObservableList<String> getAllCountries() throws SQLException {
+        ObservableList<String> allCountries = FXCollections.observableArrayList();
 
         String SQL = "SELECT COUNTRY,COUNTRY_ID FROM COUNTRIES";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
@@ -97,7 +97,7 @@ public class CustomerDataAccess {
             String countryName = rs.getString(1);
             // System.out.println(rs.getString(1));
             Countries country = new Countries(countryName);
-            allCountries.add(country);
+            allCountries.add(String.valueOf(country));
         }
 
         return allCountries;
@@ -110,8 +110,8 @@ public class CustomerDataAccess {
      * @return
      * @throws SQLException
      */
-    public static ObservableList<FirstLevelDivisions> getFirstLevelDivisions(String selectedCountry) throws SQLException {
-        ObservableList<FirstLevelDivisions> allFirstLevelDivisions = FXCollections.observableArrayList();
+    public static ObservableList<String> getFirstLevelDivisions(String selectedCountry) throws SQLException {
+        ObservableList<String> allFirstLevelDivisions = FXCollections.observableArrayList();
 
         if (selectedCountry.equals("U.S")) {
             System.out.println("United States");
@@ -123,7 +123,7 @@ public class CustomerDataAccess {
                 // System.out.println(rs.getString(1));
                 String firstLevelDivisionName = rs.getString(1);
                 FirstLevelDivisions firstLevelDivisions = new FirstLevelDivisions(firstLevelDivisionName);
-                allFirstLevelDivisions.add(firstLevelDivisions);
+                allFirstLevelDivisions.add(String.valueOf(firstLevelDivisions));
             }
 
         }
@@ -137,7 +137,7 @@ public class CustomerDataAccess {
                 // System.out.println(rs.getString(1));
                 String firstLevelDivisionName = rs.getString(1);
                 FirstLevelDivisions firstLevelDivisions = new FirstLevelDivisions(firstLevelDivisionName);
-                allFirstLevelDivisions.add(firstLevelDivisions);
+                allFirstLevelDivisions.add(String.valueOf(firstLevelDivisions));
             }
         }
         if (selectedCountry.equals("Canada")) {
@@ -150,7 +150,7 @@ public class CustomerDataAccess {
                 // System.out.println(rs.getString(1));
                 String firstLevelDivisionName = rs.getString(1);
                 FirstLevelDivisions firstLevelDivisions = new FirstLevelDivisions(firstLevelDivisionName);
-                allFirstLevelDivisions.add(firstLevelDivisions);
+                allFirstLevelDivisions.add(String.valueOf(firstLevelDivisions));
             }
         }
 
@@ -174,5 +174,18 @@ public class CustomerDataAccess {
             divisionID = rs.getInt(1);
         }
         return divisionID;
+    }
+
+    public static String getFirstLevelDivisionName(int firstLevelDivisionNum) throws SQLException {
+
+        String firstLevelDivisionName = null;
+        String SQL = "SELECT DIVISION FROM FIRST_LEVEL_DIVISIONS WHERE DIVISION_ID = " + firstLevelDivisionNum;
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()) {
+            firstLevelDivisionName = rs.getString(1);
+        }
+        return firstLevelDivisionName;
     }
 }

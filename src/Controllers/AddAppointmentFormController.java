@@ -2,9 +2,7 @@ package Controllers;
 import C195.JDBC;
 import DataAccess.AppointmentDataAccess;
 import DataAccess.CustomerDataAccess;
-import UML.Contacts;
 import UML.Customer;
-import UML.Users;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -238,7 +236,7 @@ public class AddAppointmentFormController implements Initializable {
      * ComboBox used to collect the User ID that will be associated with the Appointment ID
      */
     @FXML
-    private ComboBox<Users> userIDComboBox;
+    private ComboBox<String> userIDComboBox;
 
     /**
      * TextField used to collect the Appointment type
@@ -274,7 +272,7 @@ public class AddAppointmentFormController implements Initializable {
      * ComboBox used to collect the Contact (name) associated with the Appointment.
      */
     @FXML
-    private ComboBox<Contacts> contactComboBox;
+    private ComboBox<String> contactComboBox;
 
     /**
      * Returns the user to the 'AppointmentsForm.fxml' menu

@@ -1,8 +1,6 @@
 package Controllers;
 import C195.JDBC;
 import DataAccess.CustomerDataAccess;
-import UML.Countries;
-import UML.FirstLevelDivisions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -88,13 +86,13 @@ public class AddCustomerRecordFormController implements Initializable {
      * ComboBox used to collect the Customers country. Used to determine what will be shown in the First-Level Division ComboBox.
      */
     @FXML
-    private ComboBox<Countries> countryComboBox;
+    private ComboBox<String> countryComboBox;
 
     /**
      * ComboBox used to collect the Customer First-Level Division. Pre-populates based on what the user selects in the country ComboBox.
      */
     @FXML
-    private ComboBox<FirstLevelDivisions> firstlevelDivisionComboBox;
+    private ComboBox<String> firstlevelDivisionComboBox;
 
     /**
      * Returns the user to the 'CustomerRecords.fxml' menu

@@ -4,7 +4,6 @@ import C195.JDBC;
 import DataAccess.AppointmentDataAccess;
 import DataAccess.CustomerDataAccess;
 import UML.Appointment;
-import UML.Contacts;
 import UML.Customer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -107,7 +106,7 @@ public class ReportsController implements Initializable {
      * ComboBox used to collect contact
      */
     @FXML
-    private ComboBox<Contacts> contactComboBox;
+    private ComboBox<String> contactComboBox;
 
     /**
      * ComboBox used to collect customer
@@ -226,7 +225,7 @@ public class ReportsController implements Initializable {
     @FXML
     void onActionSearchContact(ActionEvent event) throws SQLException {
 
-        Contacts selectedContact = contactComboBox.getSelectionModel().getSelectedItem();
+        String selectedContact = contactComboBox.getSelectionModel().getSelectedItem();
         int contactID = AppointmentDataAccess.getContactID(String.valueOf(selectedContact));
         appointmentTableViewReport.setItems(AppointmentDataAccess.getAllAppointmentsContact(contactID));
 
@@ -242,7 +241,7 @@ public class ReportsController implements Initializable {
     void onActionSearchCustomer(ActionEvent event) throws SQLException {
 
         Customer selectedCustomer = customerComboBox.getSelectionModel().getSelectedItem();
-        appointmentTableViewReport.setItems(AppointmentDataAccess.getAllAppointmentsCustomer(selectedCustomer));
+        appointmentTableViewReport.setItems(AppointmentDataAccess.getAllAppointmentsCustomer(String.valueOf(selectedCustomer)));
 
     }
 
