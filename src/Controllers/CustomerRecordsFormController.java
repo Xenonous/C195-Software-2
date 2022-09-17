@@ -135,9 +135,7 @@ public class CustomerRecordsFormController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void onActionAddCustomer(ActionEvent event) throws IOException {
-
-        customerTableView.getSortOrder().add(customerIDColumn);
+    void onActionAddCustomer(ActionEvent event) throws IOException, InterruptedException {
 
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/fxml/AddCustomerRecordForm.fxml"));
@@ -250,8 +248,9 @@ public class CustomerRecordsFormController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         try {
+
             customerTableView.setItems(CustomerDataAccess.getAllCustomers());
-            customerTableView.getSortOrder().add(customerIDColumn);
+
         }
 
         catch (SQLException throwable) {
@@ -265,5 +264,6 @@ public class CustomerRecordsFormController implements Initializable {
         customerPhoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("customerPhoneNumber"));
         customerCountryColumn.setCellValueFactory(new PropertyValueFactory<>("customerCountry"));
         customerFirstLevelDivisionColumn.setCellValueFactory(new PropertyValueFactory<>("customerFirstLevelDivision"));
+
     }
 }

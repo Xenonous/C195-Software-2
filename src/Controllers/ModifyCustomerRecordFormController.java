@@ -156,7 +156,7 @@ public class ModifyCustomerRecordFormController implements Initializable {
      */
     @FXML
     void onActionModifyCustomer(ActionEvent event) throws IOException, SQLException {
-        if (nameTextField.getText().isEmpty() || addressTextField.getText().isEmpty() || postalNumberTextField.getText().isEmpty() || phoneNumberTextField.getText().isEmpty() || countryComboBox.getSelectionModel().isEmpty() || firstlevelDivisionComboBox.getSelectionModel().isEmpty()) {
+        if (nameTextField.getText().isEmpty() || addressTextField.getText().isEmpty() || postalNumberTextField.getText().isEmpty() || phoneNumberTextField.getText().isEmpty() || countryComboBox.getSelectionModel().isEmpty() || firstlevelDivisionComboBox.getSelectionModel().getSelectedItem().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("MISSING INFORMATION");
@@ -168,7 +168,7 @@ public class ModifyCustomerRecordFormController implements Initializable {
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("CONFIRMATION");
-            alert.setHeaderText("Customer Addition");
+            alert.setHeaderText("Customer Modification");
             alert.setContentText("Do you really want to MODIFY the following Customer?");
             Optional<ButtonType> OKButton = alert.showAndWait();
 

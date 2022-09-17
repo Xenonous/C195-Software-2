@@ -28,6 +28,7 @@ public class AddCustomerRecordFormController implements Initializable {
     Stage stage;
     Parent scene;
 
+
     /**
      * Information text.
      */
@@ -187,6 +188,8 @@ public class AddCustomerRecordFormController implements Initializable {
                 scene = FXMLLoader.load(getClass().getResource("/fxml/CustomerRecordsForm.fxml"));
                 stage.setScene(new Scene(scene));
                 stage.show();
+
+
 
             }
         }

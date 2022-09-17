@@ -16,8 +16,6 @@ import java.sql.SQLException;
  */
 public class CustomerDataAccess {
 
-    private static int customerID = 10;
-
     /**
      * ObservableList for all Customers
      */
@@ -38,10 +36,19 @@ public class CustomerDataAccess {
      *
      * @return
      */
-    public static int getNewCustomerID() {
+    public static int getNewCustomerID() throws SQLException {
+        int customerID = 1;
+        String SQL = "SELECT CUSTOMER_ID FROM CUSTOMERS ORDER BY CAST(CUSTOMER_ID AS unsigned)";
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
+        ResultSet rs = ps.executeQuery();
 
-        customerID = customerID + 1;
-        System.out.println(customerID);
+        while (rs.next()) {
+            if (rs.getInt(1) == customerID) {
+                customerID++;
+            } else if (rs.getInt(1) != customerID) {
+                break;
+            }
+        }
         return customerID;
     }
 
@@ -53,8 +60,10 @@ public class CustomerDataAccess {
      */
     public static ObservableList<Customer> getAllCustomers() throws SQLException {
 
+        int customerID = 0;
+
         String SQL = "SELECT cu.CUSTOMER_ID, cu.CUSTOMER_NAME, cu.ADDRESS, cu.POSTAL_CODE, cu.PHONE, cu.DIVISION_ID, co.COUNTRY FROM customers cu " +
-                "INNER JOIN FIRST_LEVEL_DIVISIONS fld ON cu.DIVISION_ID = fld.DIVISION_ID INNER JOIN COUNTRIES co ON fld.COUNTRY_ID = co.COUNTRY_ID";
+                "INNER JOIN FIRST_LEVEL_DIVISIONS fld ON cu.DIVISION_ID = fld.DIVISION_ID INNER JOIN COUNTRIES co ON fld.COUNTRY_ID = co.COUNTRY_ID ORDER BY CAST(CUSTOMER_ID AS unsigned)";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
         ResultSet rs = ps.executeQuery();
 

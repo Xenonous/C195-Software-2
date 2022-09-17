@@ -348,7 +348,7 @@ public class ModifyAppointmentFormController implements Initializable {
             alert.showAndWait();
         }
 
-        else if (idTextField.getText().isEmpty() || titleTextField.getText().isEmpty() || descriptionTextField.getText().isEmpty() || locationTextField.getText().isEmpty() || typeTextField.getText().isEmpty() || startDateTimePicker.toString().isEmpty() || startTimeTextField.getText().isEmpty() || endDateTimePicker.toString().isEmpty() || endTimeTextField.getText().isEmpty() || contactComboBox.getSelectionModel().isEmpty() || userIDComboBox.getSelectionModel().isEmpty() || customerIDComboBox.getSelectionModel().isEmpty()) {
+        else if (idTextField.getText().isEmpty() || titleTextField.getText().isEmpty() || descriptionTextField.getText().isEmpty() || locationTextField.getText().isEmpty() || typeTextField.getText().isEmpty() || startDateTimePicker.toString().isEmpty() || startTimeTextField.getText().isEmpty() || endDateTimePicker.toString().isEmpty() || endTimeTextField.getText().isEmpty() || contactComboBox.getSelectionModel().getSelectedItem().isEmpty() || userIDComboBox.getSelectionModel().getSelectedItem().isEmpty() /* || customerIDComboBox.getSelectionModel().isEmpty() */ ) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("MISSING INFORMATION");

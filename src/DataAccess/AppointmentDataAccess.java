@@ -23,7 +23,7 @@ public class AppointmentDataAccess {
     private static final ZoneId localZoneID = ZoneId.systemDefault();
     private static final ZoneId utcZoneID = ZoneId.of("UTC");
 
-    private static int appointmentID = 0;
+    private static int appointmentID = 1;
 
     /**
      * An ObservableList of all Appointments fetched.
@@ -45,10 +45,19 @@ public class AppointmentDataAccess {
      *
      * @return
      */
-    public static int getNewAppointmentID() {
+    public static int getNewAppointmentID() throws SQLException {
+        int appointmentID = 1;
+        String SQL = "SELECT APPOINTMENT_ID FROM APPOINTMENTS ORDER BY CAST(APPOINTMENT_ID AS unsigned)";
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
+        ResultSet rs = ps.executeQuery();
 
-        appointmentID = appointmentID + 1;
-        System.out.println(appointmentID);
+        while (rs.next()) {
+            if (rs.getInt(1) == appointmentID) {
+                appointmentID++;
+            } else if (rs.getInt(1) != appointmentID) {
+                break;
+            }
+        }
         return appointmentID;
     }
 
@@ -63,7 +72,7 @@ public class AppointmentDataAccess {
 
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
-        String SQL = "SELECT * FROM APPOINTMENTS";
+        String SQL = "SELECT * FROM APPOINTMENTS ORDER BY CAST(APPOINTMENT_ID AS unsigned)";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
         ResultSet rs = ps.executeQuery();
 
@@ -112,12 +121,14 @@ public class AppointmentDataAccess {
 
         ObservableList<Appointment> allAppointmentsContact = FXCollections.observableArrayList();
 
+        int newAppointmentID = getNewAppointmentID();
+
         String SQL = "SELECT * FROM APPOINTMENTS WHERE CONTACT_ID = " + selectedContact;
         PreparedStatement ps = JDBC.getConnection().prepareStatement(SQL);
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
-            appointmentID = rs.getInt(1);
+            newAppointmentID = rs.getInt(1);
             String appointmentTitle = rs.getString(2);
             String appointmentDescription = rs.getString(3);
             String appointmentLocation = rs.getString(4);
@@ -141,7 +152,7 @@ public class AppointmentDataAccess {
 
             // System.out.println(localAppointmentStartDateTime + " " + localAppointmentEndDateTime);
 
-            Appointment newAppointment = new Appointment(appointmentID,appointmentTitle,appointmentDescription,appointmentLocation,appointmentType,localAppointmentStartDateTime,localAppointmentEndDateTime,customerID,userID,contactID);
+            Appointment newAppointment = new Appointment(newAppointmentID,appointmentTitle,appointmentDescription,appointmentLocation,appointmentType,localAppointmentStartDateTime,localAppointmentEndDateTime,customerID,userID,contactID);
             allAppointmentsContact.add(newAppointment);
 
             // System.out.println(rs.getInt(1) + " " + (rs.getString(2)) + " " + (rs.getString(3)) + " " + (rs.getString(4)) + " " + (rs.getString(5)));
