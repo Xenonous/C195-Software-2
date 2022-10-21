@@ -4,7 +4,7 @@
 WGU C195 Software 2 PA - JavaFX Appointment Scheduler. 
 ---
 
-Purpose: The purpose of this JavaFX application is to add/modify/delete appointments and customers while connected to a database. In this application, appointments are associated with customers and deleting a customer will delete all appointment information associated with that customer. Appointment information is stored as 	      UTC in the database. When an appointment is pulled, the UTC timezone is translated to the users machine time whatever that may be and displayed in the                 TableView. The TableView information is then compared to the companys theoretical business hours, which are in EST. Translations are done everywhere to ensure 	    appointment date/time robustness. 
+Purpose: The purpose of this JavaFX application is to add/modify/delete appointments and customers while connected to a database. In this application, appointments are associated with customers and deleting a customer will delete all appointment information associated with that customer. Appointment information is stored as 	      UTC in the database. When an appointment is pulled, the UTC timezone is translated to the users machine time, whatever that may be, and displayed in the                TableView. The TableView information is then compared to the companys theoretical business hours, which is in EST. Translations are done everywhere to ensure 	    appointment date/time robustness. 
 
 ---
 
