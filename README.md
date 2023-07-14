@@ -11,7 +11,7 @@
   * Login attempts and time are recorded in a .txt log file.
 * ADD, SELECT, MODIFY, and DELETE items from a MySQL database that takes into consideration Foreign Key constraints in the database.
 * Automatic notification generation if there's an appointment within 15min after logging in. 
-* Robust Time Zone support. Automatic timezone conversion done at all levels based on the local machines' time zone. LocalDateTime, Timestamp,a nd ZonedDateTime classes used.
+* Robust Time Zone support. Automatic timezone conversion done at all levels based on the local machines' time zone. LocalDateTime, Timestamp, and ZonedDateTime classes used.
 * General User Interface support using JavaFX.
 * Github and Git for Version Control
 * Lambda Expressions
