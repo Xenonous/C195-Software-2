@@ -34,7 +34,7 @@
 
 Author: Dylan Franklin
 
-Contact Information: ~~dfra145@wgu.edu~~ / epicishness100@gmail.com
+Contact Information: ~~dfra145@wgu.edu~~ / epicishness100@gmail.com / dfra0605@gmail.com
 
 Student Application Version: V2.0
 
