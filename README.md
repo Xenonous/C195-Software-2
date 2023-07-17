@@ -4,6 +4,19 @@
 # WGU C195 Software 2 PA - JavaFX Appointment Scheduler. #
 
 ---
+## SCREENSHOTS ##
+
+![JavaAppointmentSchedulerLoginScreenshot](https://github.com/Xenonous/Java-Appointment-Scheduler/assets/112530437/157251a3-fe43-42ea-a5f7-a9b268fe15fd)
+
+![JavaAppointmentSchedulerCustomersScreenshot](https://github.com/Xenonous/Java-Appointment-Scheduler/assets/112530437/d34e73e3-42bf-466d-9b26-ec3d022da40f)
+
+![JavaAppointmentSchedulerAppointmentsScreenshot](https://github.com/Xenonous/Java-Appointment-Scheduler/assets/112530437/a92c7c27-e4d0-49fa-b7e5-fa194cd9bbc8)
+
+![JavaAppointmentSchedulerReportsScreenshot](https://github.com/Xenonous/Java-Appointment-Scheduler/assets/112530437/45194e23-9226-4747-9d2c-7801f3753190)
+
+![JavaAppointmentSchedulerAddAppointmentsScreenshot](https://github.com/Xenonous/Java-Appointment-Scheduler/assets/112530437/b4725336-871e-4e1c-89f0-153754ef27e0)
+
+---
 ## FUNCTIONALITIES/DEMONSTRATED SKILLS ##
 
 * Used Java Database Connectivity (JDBC) API to manipulate an external SQL Database.
@@ -12,9 +25,13 @@
 * ADD, SELECT, MODIFY, and DELETE items from a MySQL database that takes into consideration Foreign Key constraints in the database.
 * Automatic notification generation if there's an appointment within 15min after logging in. 
 * Robust Time Zone support. Automatic timezone conversion done at all levels based on the local machines' time zone. LocalDateTime, Timestamp, and ZonedDateTime classes used.
+* Logic checks throughout the entire application to ensure proper entry of data.
+* Automatic filling of TextField and ComboBox fields when MODIFYING data.
 * General User Interface support using JavaFX.
 * Github and Git for Version Control
 * Lambda Expressions
+  
+
 ---
 ## PURPOSE ##
 
